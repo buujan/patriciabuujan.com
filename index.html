@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -665,12 +665,30 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   body.modo-proyecto .portada { padding-bottom: 72px; }
   .pv-portada__foto { aspect-ratio: 9 / 10; }
 }
+/* idioma: en / es, pequeño en la esquina de abajo a la derecha */
+.idioma {
+  position: fixed; z-index: 26; right: var(--gutter);
+  bottom: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 0.35em; align-items: baseline;
+  font-size: 11px; letter-spacing: 0.04em; color: var(--ink);
+}
+.idioma button { background: none; border: 0; padding: 2px 0; cursor: pointer; font: inherit; color: inherit; opacity: 0.4; transition: opacity .2s ease; }
+.idioma button:hover { opacity: 0.8; }
+.idioma button[aria-pressed="true"] { opacity: 1; cursor: default; }
+.idioma button:focus-visible { outline: 1px solid var(--ink); outline-offset: 3px; }
+.idioma span { opacity: 0.4; }
+body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
+@media (max-width: 760px) {
+  .idioma { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  /* en archive la barra de abajo (todo / foto / vídeo) ocupa el ancho: el idioma sube arriba a la izquierda, a la altura de la (X) */
+  body.modo-archive .idioma { bottom: auto; right: auto; left: var(--gutter); top: calc(clamp(18px, 3vh, 32px) + 44px + 8px + env(safe-area-inset-top, 0px)); }
+}
 </style>
 <main class="portada">
   <nav class="menu" aria-label="Principal">
-    <a href="#panel-about" data-panel="about" aria-controls="panel-about" aria-expanded="false">about</a>
-    <a href="#archive" class="enlace-archive" id="abrir-archive">archive</a>
-    <a href="#panel-contact" data-panel="contact" aria-controls="panel-contact" aria-expanded="false">contact</a>
+    <a href="#panel-about" data-panel="about" aria-controls="panel-about" aria-expanded="false" data-en="about" data-es="sobre mí">about</a>
+    <a href="#archive" class="enlace-archive" id="abrir-archive" data-en="archive" data-es="archivo">archive</a>
+    <a href="#panel-contact" data-panel="contact" aria-controls="panel-contact" aria-expanded="false" data-en="contact" data-es="contacto">contact</a>
   </nav>
 
   <h1 class="nombre nombre--izq"><img class="firma" src="img/firma-patricia.svg" alt="Patricia"></h1>
@@ -739,12 +757,12 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
         <span class="proyecto__titulo">running love</span>
       </button>
     </div>
-    <p class="archivo__vacio" hidden>no projects here yet</p>
+    <p class="archivo__vacio" hidden data-en="no projects here yet" data-es="aún no hay proyectos aquí">no projects here yet</p>
   </section>
   <div class="filtro" role="group" aria-label="Filtrar proyectos">
-    <button type="button" data-filtro="all" aria-pressed="true">all <span class="cuenta"></span></button>
-    <button type="button" data-filtro="photo" aria-pressed="false">photo <span class="cuenta"></span></button>
-    <button type="button" data-filtro="film" aria-pressed="false">film <span class="cuenta"></span></button>
+    <button type="button" data-filtro="all" aria-pressed="true"><span data-en="all" data-es="todo">all</span> <span class="cuenta"></span></button>
+    <button type="button" data-filtro="photo" aria-pressed="false"><span data-en="photo" data-es="foto">photo</span> <span class="cuenta"></span></button>
+    <button type="button" data-filtro="film" aria-pressed="false"><span data-en="film" data-es="vídeo">film</span> <span class="cuenta"></span></button>
   </div>
   <section class="proyecto-vista" id="proyecto-vista" aria-label="Proyecto">
   </section>
@@ -760,8 +778,8 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
     <section class="seccion seccion--about" id="panel-about" aria-label="About">
       <h2><img class="firma" src="img/firma-patricia.svg" alt="Patricia"></h2>
       <div class="texto">
-        <p>Visual creator and art director working across still and moving image, with a focus on fashion and artistic editorial projects.</p>
-        <p>Based in Madrid. Finishing a double degree in Audiovisual Communication and Business Administration, graduating in 2027.</p>
+        <p data-en="Visual creator and art director working across still and moving image, with a focus on fashion and artistic editorial projects." data-es="Creadora visual y directora de arte. Trabajo con imagen fija y en movimiento, con especial atención a la moda y a los proyectos editoriales artísticos.">Visual creator and art director working across still and moving image, with a focus on fashion and artistic editorial projects.</p>
+        <p data-en="Based in Madrid. Finishing a double degree in Audiovisual Communication and Business Administration, graduating in 2027." data-es="Vivo en Madrid. Estoy terminando el doble grado en Comunicación Audiovisual y Administración y Dirección de Empresas, y me gradúo en 2027.">Based in Madrid. Finishing a double degree in Audiovisual Communication and Business Administration, graduating in 2027.</p>
       </div>
     </section>
 
@@ -783,6 +801,10 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   <video id="visor-video" playsinline preload="none" hidden></video>
   <div class="visor__yt" id="visor-yt" hidden></div>
   <p class="visor__pie" id="visor-pie"></p>
+</div>
+
+<div class="idioma" role="group" aria-label="Language / idioma">
+  <button type="button" data-lang="en" aria-pressed="true" lang="en">en</button><span aria-hidden="true">/</span><button type="button" data-lang="es" aria-pressed="false" lang="es">es</button>
 </div>
 
 <script>
@@ -896,6 +918,59 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
 
 <script>
 (function () {
+  // ---- idioma (en / es): el texto original está en inglés; aquí su versión en español ----
+  var ES = {
+    'credits': 'créditos', 'credits +': 'créditos +', 'credits \u2212': 'créditos \u2212',
+    'watch on youtube \u2197': 'ver en youtube \u2197', 'smaller': 'más pequeñas',
+    'my role': 'mi papel', 'crew': 'equipo',
+    'collection 01': 'colección 01', 'collection 02': 'colección 02', 'collection 03': 'colección 03',
+    'design and creative direction': 'diseño y dirección creativa',
+    'photo and fashion film': 'fotografía y fashion film',
+    'talent': 'modelo', 'MUAH': 'maquillaje y peluquería',
+    'styling and photo assistant': 'estilismo y asistencia de fotografía',
+    'This documentary sets out to show the reality hidden behind traditional markets. To do so, we went to the Mercado de San Isidro, in the Madrid neighbourhood of Carabanchel.':
+      'Este documental quiere mostrar la realidad que se esconde detrás de los mercados tradicionales. Para ello, fuimos al Mercado de San Isidro, en el barrio madrileño de Carabanchel.',
+    'Editing, post-production and title design': 'Montaje, postproducción y diseño de títulos',
+    'Alejandro Alonso, Patricia García, Gonzalo Mínguez, Paula Peláez and Eva Yáñez': 'Alejandro Alonso, Patricia García, Gonzalo Mínguez, Paula Peláez y Eva Yáñez',
+    'Made for Información Audiovisual at Universidad Rey Juan Carlos.': 'Realizado para la asignatura Información Audiovisual de la Universidad Rey Juan Carlos.',
+    'Inspired by M.A.P.S by Amaia, Chachi Piruli is a short film about the complex relationship between a mother and her daughter.':
+      'Inspirado en M.A.P.S de Amaia, Chachi Piruli es un cortometraje sobre la compleja relación entre una madre y su hija.',
+    'Assistant director, editing and title design': 'Ayudante de dirección, montaje y diseño de títulos',
+    'Marina García, Patricia García, Gonzalo Mínguez, Carlota Núñez, Paula Peláez, Jessica Torres and Eva Yáñez': 'Marina García, Patricia García, Gonzalo Mínguez, Carlota Núñez, Paula Peláez, Jessica Torres y Eva Yáñez',
+    'Made for Realización Audiovisual (Cine) at Universidad Rey Juan Carlos.': 'Realizado para la asignatura Realización Audiovisual (Cine) de la Universidad Rey Juan Carlos.',
+    'A group of friends, a YouTube channel and a dangerous habit: sneaking into abandoned houses to hunt for ghosts. A homemade attempt at a horror short film.':
+      'Un grupo de amigos, un canal de YouTube y una costumbre peligrosa: colarse en casas abandonadas para cazar fantasmas. Un intento casero de cortometraje de terror.',
+    'Art direction, assistant director, editing and title design': 'Dirección de arte, ayudante de dirección, montaje y diseño de títulos',
+    'When the lights go out, the lives of three different people begin to cross. A suspense short film built from three stories linked by a single blackout, and the first one we made together as a group.':
+      'Cuando se va la luz, las vidas de tres personas distintas empiezan a cruzarse. Un cortometraje de suspense construido a partir de tres historias unidas por un mismo apagón, y el primero que hicimos juntos como grupo.',
+    'Director, director of photography, editing and title design': 'Dirección, dirección de fotografía, montaje y diseño de títulos',
+    'The sounds that, the moment I hear them, tell me it\u2019s summer. They carry me back to long afternoons of boredom and quiet, where the hours fill with small things and nothing really happens at all.':
+      'Los sonidos que, nada más oírlos, me dicen que es verano. Me devuelven a esas tardes largas de aburrimiento y calma, en las que las horas se llenan de cosas pequeñas y, en realidad, no pasa nada.',
+    'Made entirely by me.': 'Hecho íntegramente por mí.',
+    'Based on the song Olvido by Amaral, it tells the story of a woman living with Alzheimer\u2019s who, even as everything else begins to fade, keeps the memories of her partner safe from oblivion. Shot entirely on an iPhone.':
+      'Basado en la canción Olvido de Amaral, cuenta la historia de una mujer con alzhéimer que, aunque todo lo demás empieza a desvanecerse, mantiene a salvo del olvido los recuerdos de su pareja. Grabado íntegramente con un iPhone.',
+    'Made for Estructura Social Contemporánea at Universidad Rey Juan Carlos.': 'Realizado para la asignatura Estructura Social Contemporánea de la Universidad Rey Juan Carlos.',
+    'This film essay explores the inner journey towards letting go of perfectionism. Through poetic images, shadows, textures and the movements of nature, it offers a sensory experience that goes beyond conventional narrative.':
+      'Este ensayo fílmico explora el viaje interior hacia soltar el perfeccionismo. A través de imágenes poéticas, sombras, texturas y los movimientos de la naturaleza, propone una experiencia sensorial que va más allá de la narrativa convencional.',
+    'A self-promo for Running Love, our fictional dating show, imagined as part of the Antena 3 schedule.':
+      'Una autopromoción de Running Love, nuestro programa de citas ficticio, pensado como parte de la parrilla de Antena 3.',
+    'Editing, color grading and post-production': 'Montaje, etalonaje y postproducción',
+    'Made for Producción Audiovisual (TV y Radio) at Universidad Rey Juan Carlos.': 'Realizado para la asignatura Producción Audiovisual (TV y Radio) de la Universidad Rey Juan Carlos.'
+  };
+  var idioma = 'en';
+  try { if (localStorage.getItem('idioma') === 'es') idioma = 'es'; } catch (e) {}
+  function tr(t) { return (idioma === 'es' && typeof t === 'string' && ES[t]) || t; }
+  function ponerIdioma(nuevo, rehacer) {
+    idioma = nuevo;
+    try { localStorage.setItem('idioma', nuevo); } catch (e) {}
+    document.documentElement.lang = nuevo;
+    document.querySelectorAll('[data-en][data-es]').forEach(function (n) { n.textContent = n.getAttribute('data-' + nuevo); });
+    document.querySelectorAll('.idioma [data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === nuevo ? 'true' : 'false'); });
+    if (rehacer && actualId != null && document.body.classList.contains('modo-proyecto')) abrirProyecto(actualId);
+  }
+  document.querySelectorAll('.idioma [data-lang]').forEach(function (b) {
+    b.addEventListener('click', function () { if (b.dataset.lang !== idioma) ponerIdioma(b.dataset.lang, true); });
+  });
   // Proyectos y sus series (fotos PROVISIONALES sacadas del vídeo de portada; null = marco de referencia vacío).
   var PROYECTOS = {
     1: { titulo: "l'amore sublime", partes: ["l'amore", 'sublime'], portada: 'img/proyectos/luce-02.webp', series: [
@@ -1052,7 +1127,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       botonesSerie = [];
       vista.classList.add('pv--creditos-abajo');
       var bc = el('button', 'pv-creditos-abajo'); bc.type = 'button'; bc.setAttribute('aria-expanded', 'false');
-      bc.textContent = 'credits'; bc.setAttribute('aria-pressed', 'false');
+      bc.textContent = tr('credits'); bc.setAttribute('aria-pressed', 'false');
       bc.addEventListener('click', function () {
         var caja = vista.querySelector('.pv-creditos'); if (!caja) return;
         var ab = caja.classList.toggle('abierto');
@@ -1065,13 +1140,13 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       // una sola colección (stills): sin botón abajo y el carrusel en el centro de la página
       botonesSerie = []; vista.classList.add('pv--centro');
     } else botonesSerie = p.series.map(function (s, k) {
-      var b = el('button', null, s.nombre); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      var b = el('button', null, tr(s.nombre)); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
       b.addEventListener('click', function () { elegirSerie(k); });
       des.appendChild(b); return b;
     });
     vista.appendChild(izq); vista.appendChild(der); vista.appendChild(des);
     var red = el('button', 'pv-reducir', '(\u2212)'); red.type = 'button';
-    red.setAttribute('aria-label', 'Ver las fotos pequeñas'); red.title = 'smaller';
+    red.setAttribute('aria-label', 'Ver las fotos pequeñas'); red.title = tr('smaller');
     red.addEventListener('click', reducirFotos);
     vista.appendChild(red);
     // clic en el espacio vacío (fuera de las fotos) con las fotos grandes: vuelven a ser pequeñas
@@ -1209,13 +1284,13 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
     lineas.forEach(function (linea) {
       var par = el('p');
       if (destino === f && comoCorto && (linea === 'crew' || linea === 'my role')) {
-        var bt = el('button', 'pv-creditos__boton', 'credits +'); bt.type = 'button'; bt.setAttribute('aria-expanded', 'false');
+        var bt = el('button', 'pv-creditos__boton', tr('credits +')); bt.type = 'button'; bt.setAttribute('aria-expanded', 'false');
         var caja = el('div', 'pv-creditos'), dentroCaja = el('div', 'pv-creditos__dentro');
         caja.appendChild(dentroCaja);
         bt.addEventListener('click', function (e) {
           e.stopPropagation();
           var abierto = caja.classList.toggle('abierto');
-          bt.textContent = abierto ? 'credits \u2212' : 'credits +'; bt.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+          bt.textContent = tr(abierto ? 'credits \u2212' : 'credits +'); bt.setAttribute('aria-expanded', abierto ? 'true' : 'false');
         });
         f.appendChild(bt); f.appendChild(caja); destino = dentroCaja;
       }
@@ -1225,10 +1300,10 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       if (Array.isArray(linea)) {
         var a = el('a', null, '@' + linea[0]);
         a.href = 'https://www.instagram.com/' + linea[0] + '/'; a.target = '_blank'; a.rel = 'noopener';
-        par.appendChild(a); par.appendChild(document.createTextNode(' ' + linea[1]));
+        par.appendChild(a); par.appendChild(document.createTextNode(' ' + tr(linea[1])));
       } else if (linea === '') par.classList.add('pv-ficha__hueco');
-      else if ((linea === 'crew' || linea === 'my role') && comoCorto) { par.classList.add('pv-ficha__etiqueta'); par.textContent = linea; }
-      else par.textContent = linea;
+      else if ((linea === 'crew' || linea === 'my role') && comoCorto) { par.classList.add('pv-ficha__etiqueta'); par.textContent = tr(linea); }
+      else par.textContent = tr(linea);
       // la línea de la asignatura ("Made for…") va siempre a la vista, fuera del desplegable de créditos
       if (destino !== f && typeof linea === 'string' && /^Made for /.test(linea)) { par.classList.remove('pv-ficha__dentro'); par.style.marginTop = '6px'; f.appendChild(par); }
       else destino.appendChild(par);
@@ -1423,7 +1498,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       var fr = el('iframe'); fr.src = 'https://www.youtube-nocookie.com/embed/' + s.youtube + '?rel=0&modestbranding=1&playsinline=1&iv_load_policy=3';
       fr.title = s.nombre; fr.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture'; fr.allowFullscreen = true;
       marco.appendChild(fr); caja.appendChild(marco);
-      var enlace = el('a', 'pv-yt__ver', 'watch on youtube \u2197');
+      var enlace = el('a', 'pv-yt__ver', tr('watch on youtube \u2197'));
       enlace.href = 'https://www.youtube.com/watch?v=' + s.youtube; enlace.target = '_blank'; enlace.rel = 'noopener';
       caja.appendChild(enlace);
       carrusel.appendChild(caja);
@@ -1457,7 +1532,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       comentTexto.appendChild(crearFicha(s));
       return;
     }
-    comentEtiqueta.textContent = s.nombre + (actualId == 1 ? '   ' : ' - ') + dos(i + 1) + ' / ' + dos(s.fotos.length);
+    comentEtiqueta.textContent = tr(s.nombre) + (actualId == 1 ? '   ' : ' - ') + dos(i + 1) + ' / ' + dos(s.fotos.length);
     comentTexto.textContent = '';
   }
   function mmss(t) { t = Math.floor(t); return dos(Math.floor(t / 60)) + ':' + dos(t % 60); }
@@ -1602,6 +1677,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
     else if (vista.classList.contains('pv--video') || abajo > 4) volverAPortada();
     else cuerpo.classList.remove('modo-proyecto');
   }, true);
+  if (idioma !== 'en') ponerIdioma(idioma, false);
 })();
 </script>
 </body>
