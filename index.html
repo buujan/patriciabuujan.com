@@ -491,7 +491,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
 .pv-foto--yt { display: flex; flex-direction: column; gap: 14px; width: 100%; cursor: default; }
 .pv-yt__marco { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
 .pv-yt__marco .pv-yt__pendiente { position: absolute; inset: 0; aspect-ratio: auto; }
-.pv-yt__marco iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pv-yt__marco iframe, .pv-yt__marco video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
 .pv-yt__ver { align-self: flex-start; font-size: 13px; letter-spacing: 0.03em; color: var(--ink); text-decoration: none; }
 .pv-yt__ver:hover { color: var(--hover); }
 .pv-info__boton { display: none; }
@@ -966,9 +966,8 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       '',
       'Made for Realización Audiovisual (Cine) at Universidad Rey Juan Carlos.'] }
   ] };
-  // pendiente: enlace de YouTube, portada, texto y crew
   PROYECTOS[8] = { titulo: 'sonidos del verano', series: [
-    { nombre: 'film', youtube: null, ficha: ['sonidos del verano', 'film',
+    { nombre: 'film', youtube: null, archivo: 'video/sonidos-del-verano.mp4', poster: 'img/proyectos/sonidos-del-verano-poster.webp', ficha: ['sonidos del verano', 'film',
       'The sounds that, the moment I hear them, tell me it\u2019s summer. They carry me back to long afternoons of boredom and quiet, where the hours fill with small things and nothing really happens at all.',
       '',
       'Made entirely by me.'] }
@@ -1391,6 +1390,16 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       // vídeo de YouTube: el reproductor tal cual, dentro de la web; debajo, un enlace por si no carga
       var caja = el('div', 'pv-foto pv-foto--yt'); caja.dataset.n = 0;
       var marco = el('div', 'pv-yt__marco');
+      if (s.archivo) {
+        // vídeo propio (mp4) en vez de YouTube: reproductor nativo con sonido y controles
+        var vf = el('video'); vf.src = s.archivo; if (s.poster) vf.poster = s.poster;
+        vf.controls = true; vf.playsInline = true; vf.setAttribute('playsinline', ''); vf.preload = 'metadata';
+        marco.appendChild(vf); caja.appendChild(marco); carrusel.appendChild(caja);
+        botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
+        vista.classList.remove('pv--grande', 'pv--ficha'); vista.classList.add('pv--video');
+        cuerpo.classList.add('con-video'); carrusel.scrollTop = 0; ponerComentario(0);
+        return;
+      }
       if (!s.youtube) {
         // aún sin enlace: hueco del vídeo
         marco.appendChild(el('div', 'pv-vacia pv-yt__pendiente', 'video'));
