@@ -1,0 +1,9 @@
+{
+  // Configuración de Cloudflare: la web es estática (index.html, img/, video/)
+  "name": "patriciabuujan-com",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "single-page-application"
+  }
+}

@@ -1,0 +1,6 @@
+.git
+.git/**
+wrangler.jsonc
+.assetsignore
+LICENSE
+node_modules
