@@ -1301,6 +1301,17 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTitulo);
 
   function suave() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }
+  // al salir de un proyecto, ningún vídeo sigue sonando: se paran los vídeos y se cortan los de YouTube
+  function pararVideos() {
+    vista.querySelectorAll('video').forEach(function (v) { v.pause(); });
+    vista.querySelectorAll('iframe').forEach(function (f) { f.remove(); });
+  }
+  new MutationObserver(function () {
+    if (!cuerpo.classList.contains('modo-proyecto')) pararVideos();
+  }).observe(cuerpo, { attributes: true, attributeFilter: ['class'] });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) vista.querySelectorAll('video').forEach(function (v) { v.pause(); });
+  });
   function volverAPortada() {
     if (vista.classList.contains('pv--video')) construirRecorrido();
     vista.classList.remove('pv--grande');
@@ -1383,7 +1394,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
     var s = actual.series[k];
     serieActual = k;
     carrusel.innerHTML = '';
-    // fashion film: el vídeo grande, en silencio y en bucle; un clic lo abre a pantalla completa con sonido
+    // fashion film: el vídeo grande, quieto (sin bucle ni reproducción automática); un clic lo abre a pantalla completa con sonido
     var bv = el('button', 'pv-foto pv-foto--video'); bv.type = 'button'; bv.dataset.n = 0;
     bv.setAttribute('aria-label', 'Ver ' + s.nombre);
     if (esCorto(s)) {
@@ -1422,12 +1433,11 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
       return;
     }
     var v = el('video'); v.src = s.video; if (s.poster) v.poster = s.poster;
-    v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+    v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'metadata';
     v.addEventListener('loadedmetadata', function () { ponerComentario(0); });
     bv.appendChild(v);
     bv.addEventListener('click', function () { abrirVideo(s, v); });
     carrusel.appendChild(bv);
-    var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
     botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
     vista.classList.remove('pv--grande');
     vista.classList.add('pv--video');
