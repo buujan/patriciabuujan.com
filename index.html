@@ -1,0 +1,1588 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patricia Buján</title>
+<meta name="description" content="Patricia Buján — fotografía y film.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Courier+Prime&display=swap">
+<link rel="preload" as="image" href="img/portada.webp">
+<style>
+/* Portada: menú arriba, nombre partido a ambos lados del bucle, contador debajo. Una sola pantalla, fondo blanco. */
+:root {
+  --bg: #ffffff;
+  --ink: #1d1d1b;
+  --ink-soft: #3a3a36;
+  --hover: #4f7a6e;
+  --line: #e6e4de;
+  --frame: #f7f6f2;
+  --paper: #f1efea;
+  --font-name: "Yuji Boku", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-type: "Courier New", Courier, "Courier Prime", monospace;
+  --gutter: clamp(16px, 3vw, 40px);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-type);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--ink); text-decoration: none; }
+a:hover { color: var(--hover); }
+a:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+
+.portada {
+  min-height: 100%;
+  padding-block: clamp(18px, 3vh, 32px);
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+}
+
+.menu { display: contents; }
+.menu a { align-self: start; font-size: 15px; letter-spacing: 0.01em; }
+.menu a:nth-child(1) { justify-self: start; }
+.menu a:nth-child(2) { justify-self: center; }
+.menu > a:last-of-type { justify-self: end; }
+
+.nombre {
+  font-family: var(--font-name);
+  font-weight: 400;
+  font-size: clamp(26px, 2.4vw, 38px);
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+.nombre--izq { justify-self: start; }
+/* Firma manuscrita de Patricia (PNG transparente en negro) en lugar del texto */
+.firma { display: block; width: auto; max-width: none; }
+.nombre .firma { height: calc(clamp(26px, 2.4vw, 38px) * 2.6); }
+.seccion h2 .firma { height: calc(clamp(28px, 2.4vw, 36px) * 2.6); }
+.nombre--der { justify-self: end; }
+.nombre--izq { grid-column: 1; grid-row: 2; } .bucle { grid-column: 2; grid-row: 2; } .nombre--der { grid-column: 3; grid-row: 2; }
+/* Buján escrito a mano con el mismo trazo: misma altura de mayúscula y misma línea base que la firma; la j cuelga por debajo */
+.nombre .firma--bujan { height: calc(clamp(26px, 2.4vw, 38px) * 2.6); margin: 0; transform: translateY(39%); } /* "uján" apoya en la misma línea que "atricia" */
+
+.bucle {
+  display: block;
+  width: min(72vw, calc((100vh - 170px) * 16 / 9), 1240px);
+  height: auto;
+  max-width: 100%;
+}
+
+.contador {
+  grid-column: 2;
+  justify-self: center;
+  align-self: end;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+/* Móvil: el nombre arriba y abajo del bucle, en vez de a los lados */
+@media (max-width: 760px) {
+  .portada {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto auto auto 1fr auto;
+    row-gap: 14px;
+  }
+  .menu { display: flex; justify-content: space-between; grid-row: 1; }
+  .menu a { padding: 0 !important; }
+  .nombre { font-size: 30px; }
+  /* las dos fotos una encima de la otra; Patricia arriba a la izquierda y Buján abajo a la derecha, en diagonal,
+     alineados con los bordes de las fotos */
+  .portada { --ancho-bucle: calc(100vw - 2 * var(--gutter) - 12px); row-gap: 6px; }
+  .nombre .firma { height: 44px; }
+  .nombre .firma--bujan { height: 44px; margin: 0; transform: none; }
+  .nombre--izq, .nombre--der, .bucle { grid-column: 1; }
+  .nombre--izq, .nombre--der { justify-self: center; width: var(--ancho-bucle); display: flex; }
+  .nombre--izq { grid-row: 3; justify-content: flex-start; }
+  .bucle { grid-row: 4; width: var(--ancho-bucle); height: auto; justify-self: center; }
+  .nombre--der { grid-row: 5; justify-content: flex-end; }
+  .contador { grid-column: 1; grid-row: 7; }
+  /* portada (sin archive ni proyecto abierto): fotos a la derecha y Patricia / Buján, una encima de otra,
+     centradas en el hueco de la izquierda */
+  body:not(.modo-archive):not(.modo-proyecto) .portada {
+    --ancho-bucle: 60vw;
+    grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr calc(var(--ancho-bucle) * 1.104) calc(var(--ancho-bucle) * 1.104) 1fr; column-gap: 12px; row-gap: 0;
+  }
+  body:not(.modo-archive):not(.modo-proyecto) .menu { grid-column: 1 / -1; }
+  body:not(.modo-archive):not(.modo-proyecto) .bucle { grid-column: 2; grid-row: 3 / 5; align-self: center; }
+  body:not(.modo-archive):not(.modo-proyecto) .nombre--izq,
+  body:not(.modo-archive):not(.modo-proyecto) .nombre--der { grid-column: 1; width: auto; justify-self: center; align-self: center; }
+  /* Patricia a la altura del centro de la primera foto y Buján del de la segunda */
+  body:not(.modo-archive):not(.modo-proyecto) .nombre--izq { grid-row: 3; }
+  body:not(.modo-archive):not(.modo-proyecto) .nombre--der { grid-row: 4; }
+  body:not(.modo-archive):not(.modo-proyecto) .nombre .firma { height: 34px; max-width: 100%; }
+}
+
+/* Hoja about / contact (según el boceto de Patricia): hoja en blanco sobre la portada.
+   about arriba a la izquierda, contact más abajo a la derecha, en diagonal. Cada uno tiene su sitio fijo,
+   así que pueden aparecer solos o juntos sin moverse. Pie con el copyright abajo. */
+.menu a { position: relative; z-index: 30; }
+.menu a[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.hoja {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: var(--bg);
+  overflow-y: auto;
+  padding: calc(clamp(18px, 3vh, 32px) + 40px + env(safe-area-inset-top, 0px)) var(--gutter) calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility 0s linear .35s;
+}
+.hoja.visible { opacity: 1; visibility: visible; transition: opacity .35s ease, visibility 0s; }
+.hoja__fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  row-gap: clamp(44px, 8vh, 80px);
+  padding-top: clamp(40px, 9vh, 90px);
+  padding-inline: clamp(0px, 7vw, 120px);
+}
+.seccion {
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  transition: opacity .45s ease, transform .6s cubic-bezier(.2,.7,.2,1), visibility 0s linear .6s;
+}
+.seccion.abierta { opacity: 1; transform: none; visibility: visible; transition: opacity .45s ease .05s, transform .6s cubic-bezier(.2,.7,.2,1) .05s, visibility 0s; }
+.seccion--about { grid-column: 1 / -1; grid-row: 1; }
+.seccion--contact { grid-column: 2; grid-row: 2; justify-self: end; }
+.seccion h2 {
+  font-family: var(--font-name); font-weight: 400;
+  margin: 0 0 20px;
+  font-size: clamp(28px, 2.4vw, 36px); line-height: 1.1; letter-spacing: 0.02em;
+}
+.seccion--contact h2 { text-align: right; }
+.seccion--contact h2 .firma { margin-left: auto; }
+.seccion .texto { max-width: 68ch; display: flex; flex-direction: column; gap: 1.5em; }
+.seccion p { margin: 0; font-size: 15px; line-height: 1.5; }
+.datos {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: clamp(40px, 5vw, 72px);
+  row-gap: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.datos dt { margin: 0; }
+.datos dd { margin: 0; text-align: right; }
+.hoja__pie {
+  margin: auto 0 0;
+  padding-top: 40px;
+  align-self: center;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.hoja__salir {
+  position: fixed;
+  z-index: 25;
+  top: calc(clamp(18px, 3vh, 32px) + 44px + env(safe-area-inset-top, 0px));
+  right: var(--gutter);
+  background: none; border: 0; padding: 6px 0; cursor: pointer;
+  font: inherit; font-size: 15px; letter-spacing: 0.04em; color: var(--ink);
+}
+.hoja__salir { display: none !important; }
+.hoja__salir:hover { color: var(--hover); }
+.hoja__salir:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .hoja, .seccion { transition: none !important; transform: none !important; } }
+@media (max-width: 760px) {
+  .hoja__fila { grid-template-columns: minmax(0, 1fr); padding-top: 32px; padding-inline: 0; row-gap: 56px; }
+  .seccion--about, .seccion--contact { grid-column: 1; margin-right: 0; }
+  .seccion--contact { grid-row: 2; justify-self: stretch; }
+  .datos { column-gap: 20px; }
+  .datos dd { overflow-wrap: anywhere; }
+  /* letra más pequeña en el móvil para que el texto ocupe lo mismo a la vista que en el ordenador */
+  .seccion p, .datos { font-size: 12px; line-height: 1.5; }
+  .seccion .texto { gap: 1.2em; }
+  .seccion h2 .firma { height: 50px; }
+  .hoja__fila { row-gap: 40px; margin-block: auto; padding-top: 0; transform: translateY(-10px); } /* about y contact, cada uno en su sitio fijo; el conjunto centrado con el mismo espacio arriba y abajo */
+  .hoja__pie { margin-top: 0; padding-top: 0; }
+}
+
+/* Archive: al pulsar "archive" el bucle se cambia por la cuadrícula de proyectos (4 columnas), con Patricia y Buján
+   a los lados. El menú no cambia. El filtro all / photo / film va anclado entre las columnas, a la altura de los títulos
+   de la primera fila: los proyectos se desplazan por debajo y las palabras se quedan quietas. */
+.filtro {
+  display: none; position: fixed; z-index: 3;
+  left: 0; right: 0; bottom: 0;
+  padding: 14px var(--gutter) calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-bottom, 0px));
+  background: var(--bg);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 2.4em;
+  font-size: 15px; letter-spacing: 0.01em;
+}
+.filtro button {
+  background: none; border: 0; padding: 0; cursor: pointer; white-space: nowrap;
+  font: inherit; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.filtro button:first-child { justify-self: end; }
+.filtro button:last-child { justify-self: start; }
+.filtro button:hover { color: var(--hover); }
+.filtro button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.filtro button:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+.archivo {
+  display: none;
+  grid-column: 2; grid-row: 2;
+  align-self: stretch; justify-self: center;
+  --W: min(calc(100vw - 2 * var(--gutter) - 2 * clamp(130px, 13vw, 190px)), 1180px);
+  width: var(--W);
+  min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  scrollbar-width: none;
+  position: relative; z-index: 2;
+}
+.archivo::-webkit-scrollbar { display: none; }
+body.modo-archive .portada { height: 100vh; height: 100dvh; min-height: 0; }
+.archivo__fila {
+  --celda: calc(var(--ancho) + 68px);
+  --hueco: calc(var(--W) * 0.06);
+  display: grid;
+  grid-template-columns: repeat(3, var(--celda));
+  column-gap: var(--hueco);
+  row-gap: clamp(56px, 9vh, 96px);
+  width: max-content; margin-inline: auto;
+  padding-block: clamp(40px, 16vh, 150px) 64px;
+}
+/* formato de las miniaturas: el de los pósters (proporción A, 1 : 1,414) */
+.archivo__fila, .proyecto { --ancho: calc(var(--W) * 0.2); --formato: 1448 / 2048; }
+.proyecto {
+  display: grid;
+  grid-template-columns: 24px var(--ancho) 24px;
+  column-gap: 10px;
+  row-gap: 12px;
+  color: var(--ink);
+}
+.proyecto__num { grid-column: 1; grid-row: 1; align-self: center; font-size: 12px; letter-spacing: 0.04em; }
+.proyecto__foto { grid-column: 2; grid-row: 1; display: block; width: var(--ancho); }
+.proyecto__foto img { display: block; width: 100%; height: auto; aspect-ratio: var(--formato); object-fit: cover; transition: opacity .3s ease; }
+.marco-vacio {
+  display: grid; place-items: center; width: 100%; aspect-ratio: var(--formato);
+  background: var(--paper); border: 6px solid var(--frame); outline: 1px solid var(--line);
+  font-size: 12px; letter-spacing: 0.04em; color: var(--ink);
+}
+.proyecto[hidden], .archivo__vacio[hidden] { display: none; }
+/* miniatura horizontal entera (lleva el título del corto): centrada en el mismo hueco que las demás */
+.proyecto__foto.proyecto__foto--entera { aspect-ratio: var(--formato); display: flex; align-items: center; }
+.proyecto__foto--entera img { aspect-ratio: auto; }
+/* póster vertical entero: mismo alto que las demás miniaturas, centrado */
+.proyecto__foto.proyecto__foto--poster { aspect-ratio: var(--formato); display: flex; justify-content: center; }
+.proyecto__foto--poster img { aspect-ratio: auto; width: auto; height: 100%; }
+.proyecto:hover .proyecto__foto img { opacity: .85; }
+.proyecto__titulo { grid-column: 2; grid-row: 2; display: flex; justify-content: center; white-space: nowrap; font-size: 13px; line-height: 1.4; letter-spacing: 0.02em; }
+.proyecto__titulo--dos { display: block; text-align: center; }
+.pv-cubierta__sub { display: block; margin-top: 10px; font-family: var(--font-type); font-size: 13px; letter-spacing: 0.02em; text-align: center; }
+.archivo__vacio { margin: 0; font-size: 14px; text-align: center; }
+.archivo__salir {
+  position: fixed; z-index: 15;
+  top: calc(clamp(18px, 3vh, 32px) + 44px + env(safe-area-inset-top, 0px));
+  right: var(--gutter);
+  display: none;
+  background: none; border: 0; padding: 6px 0; cursor: pointer;
+  font: inherit; font-size: 15px; letter-spacing: 0.04em; color: var(--ink);
+}
+.archivo__salir:hover { color: var(--hover); }
+/* fotos ampliadas: botón (−) junto a la (X) para volver a verlas pequeñas */
+.pv-reducir {
+  position: fixed; z-index: 15;
+  top: calc(clamp(18px, 3vh, 32px) + 44px + env(safe-area-inset-top, 0px));
+  right: calc(var(--gutter) + 3.6em);
+  background: none; border: 0; padding: 6px 0; cursor: pointer;
+  font: inherit; font-size: 15px; letter-spacing: 0.04em; color: var(--ink);
+  opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility 0s linear .35s;
+}
+.pv-reducir:hover { color: var(--hover); }
+.pv-reducir:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+.proyecto-vista.pv--grande .pv-reducir { opacity: 1; visibility: visible; transition: opacity .35s ease .2s, visibility 0s; }
+/* con las fotos grandes, el hueco vacío también sirve para reducirlas */
+.proyecto-vista.pv--grande .pv-izq, .proyecto-vista.pv--grande .pv-carrusel { cursor: zoom-out; }
+.proyecto-vista.pv--grande .pv-foto { cursor: zoom-in; }
+.archivo__salir:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+
+.progreso {
+  position: fixed; z-index: 15; display: none;
+  top: calc(clamp(18px, 3vh, 32px) + 44px + env(safe-area-inset-top, 0px));
+  left: var(--gutter); padding: 6px 0; margin: 0;
+  font-size: 10px; line-height: 17px; letter-spacing: 0.06em; font-variant-numeric: tabular-nums;
+}
+body.modo-proyecto.con-serie .progreso { display: block; }
+body.modo-proyecto.con-serie.con-video .progreso { display: none; }
+body.modo-archive .bucle,
+body.modo-archive .contador { display: none; }
+/* sin contador de tiempo en la página inicial */
+.contador { display: none !important; }
+body.modo-archive .filtro { display: grid; }
+body.modo-archive .archivo { display: block; }
+body.modo-proyecto .archivo__salir { display: block; }
+
+@media (max-width: 760px) {
+  .filtro {
+    bottom: 0; z-index: 15; column-gap: 24px;
+    background: var(--bg); padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+  body.modo-archive .portada { height: auto; min-height: 100%; padding-bottom: 72px; }
+  .archivo { grid-column: 1; grid-row: 4; width: 100%; overflow: visible; justify-self: stretch; }
+  .archivo__fila { grid-template-columns: minmax(0, 1fr); justify-items: center; padding-block: 0; padding-inline: 0; width: auto; row-gap: 36px; }
+  .archivo__fila, .proyecto { --ancho: min(62vw, 260px); }
+  .proyecto__titulo { white-space: normal; text-align: center; display: block; }
+  /* en archive no van Patricia / Buján: solo los proyectos, y la (X) arriba para volver a la portada */
+  body.modo-archive .nombre { display: none; }
+  body.modo-archive .archivo__salir { display: block; }
+  /* el menú (about / archive / contact) se queda fijo arriba al bajar por archive */
+  body.modo-archive .menu {
+    position: sticky; top: 0; z-index: 16; background: var(--bg);
+    margin-top: calc(-1 * clamp(18px, 3vh, 32px)); padding-block: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-top, 0px)) 12px;
+    margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter);
+  }
+}
+
+/* Proyecto: portada con el nombre en vertical (izquierda) y la foto de archive (derecha); abajo, un desplegable
+   con las series. Al elegir una serie, la portada se desvanece y encoge y en su lugar aparece un carrusel vertical
+   con las fotos. Al pulsar una foto, todas se amplían y donde estaba el nombre aparece un comentario.
+   Un segundo clic abre la foto a pantalla completa. */
+button.proyecto { background: none; border: 0; padding: 0; font: inherit; text-align: left; cursor: pointer; }
+button.proyecto:focus-visible { outline: 1px solid var(--ink); outline-offset: 6px; }
+.proyecto-vista {
+  display: none; grid-column: 1 / -1; grid-row: 2; align-self: stretch; min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: clamp(28px, 4vw, 72px);
+  padding-top: 56px;
+  padding-bottom: 44px;
+}
+body.modo-proyecto .portada { height: 100vh; height: 100dvh; min-height: 0; }
+body.modo-proyecto .archivo, body.modo-proyecto .filtro { display: none; }
+body.modo-proyecto .proyecto-vista { display: grid; }
+body.modo-proyecto .nombre { visibility: hidden; }
+body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
+
+.pv-izq { grid-column: 1; grid-row: 1; position: relative; min-height: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+.pv-titulo {
+  /* título del proyecto: horizontal y a tamaño de lectura, en Yuji Boku */
+  margin: 0; width: min(100%, 26rem);
+  font-family: var(--font-name); font-weight: 400;
+  font-size: clamp(20px, 1.7vw, 27px); line-height: 1.3; letter-spacing: 0.02em;
+  text-align: center; text-wrap: balance;
+  transition: opacity .45s ease;
+}
+.pv-comentario {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(100%, 38ch); margin: 0;
+  display: flex; flex-direction: column; gap: 14px;
+  opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility 0s linear .45s;
+}
+.pv-comentario__etiqueta:empty, .pv-comentario__texto:empty { display: none; }
+.pv-comentario__etiqueta { margin: 0; font-size: 12px; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+.pv-comentario__texto { margin: 0; font-size: 15px; line-height: 1.7; }
+.proyecto-vista.pv--grande .pv-titulo { opacity: 0; }
+.proyecto-vista.pv--grande .pv-comentario { opacity: 1; visibility: visible; transition: opacity .45s ease .15s, visibility 0s; }
+
+.pv-der { grid-column: 2; grid-row: 1; position: relative; min-height: 0; }
+.pv-portada {
+  flex: none; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  transform-origin: 50% 0;
+}
+.pv-portada__foto {
+  display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
+  box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35);
+}
+.pv-portada .pv-vacia { width: 100%; height: 100%; }
+.pv-vacia {
+  display: grid; place-items: center; aspect-ratio: 9 / 10;
+  background: var(--paper); border: 8px solid var(--frame); outline: 1px solid var(--line);
+  font-size: 12px; letter-spacing: 0.04em; color: var(--ink);
+}
+/* recorrido: portada y series de fotos en una sola columna que se baja con el ratón */
+.pv-carrusel {
+  position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+  display: flex; flex-direction: column; align-items: center; gap: 28px;
+  padding-bottom: 40vh;
+}
+.pv-carrusel::-webkit-scrollbar { display: none; }
+.pv-cabecera {
+  flex: none; margin: 96px 0 0; padding: 0; width: 100%;
+  font-size: 13px; letter-spacing: 0.04em;
+}
+.pv-cabecera__nombre { display: none; }
+.pv-cabecera__nombre { margin: 0; }
+.pv-ficha { display: flex; flex-direction: column; gap: 10px; font-size: 14px; letter-spacing: 0.03em; }
+.pv-ficha p { margin: 0; line-height: 1.5; }
+.pv-ficha p.pv-ficha__hueco { height: 6px; }
+.pv-ficha--serie p:first-child { font-style: italic; }
+.pv-ficha p.pv-ficha__dentro { padding-left: 32px; }
+/* desplegable de créditos de los cortos */
+.pv-creditos__boton { align-self: flex-start; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 13px; letter-spacing: 0.04em; color: var(--ink); }
+.pv-creditos__boton:hover { color: var(--hover); }
+.proyecto-vista.pv--creditos-abajo .pv-creditos__boton { display: none; }
+/* botón de créditos de los cortos: igual que los botones de colección (subrayado mientras están abiertos) */
+.pv-creditos__boton:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+.pv-creditos { display: grid; grid-template-rows: 0fr; opacity: 0; margin-top: -10px; transition: grid-template-rows .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease, margin-top .45s ease; }
+.pv-creditos.abierto { grid-template-rows: 1fr; opacity: 1; margin-top: 4px; }
+.pv-creditos__dentro { overflow: hidden; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+@media (prefers-reduced-motion: reduce) { .pv-creditos { transition: none; } }
+/* cortos: título y "crew" en Yuji Boku */
+.pv-ficha--corto p.pv-ficha__cabeza { margin-bottom: 18px; line-height: 1.3; }
+.pv-ficha__titulo { font-family: var(--font-type); font-size: inherit; font-style: italic; font-weight: 700; text-transform: capitalize; letter-spacing: inherit; } /* como el título de los proyectos de fotos */
+.pv-ficha__titulo-mano { display: block; height: 50px; width: auto; max-width: 100%; margin: 0 0 4px; }
+/* el rabo de la S de Soltar cuelga por debajo: más alto para que las letras midan lo mismo que en Olvido */
+.pv-ficha__titulo-mano--soltar { height: 66px; margin: -4px 0 -8px -6px; }
+.pv-ficha__cabeza-mano { display: flex; align-items: flex-end; gap: 10px; margin: 0 0 6px !important; }
+.pv-ficha__cabeza-mano .pv-ficha__titulo-mano { margin: 0; }
+.pv-ficha__previo { display: none; } /* solo la palabra escrita a mano (Helga), sin "for" */
+.pv-ficha__titulo-mano--helga { height: 56px; }
+.pv-ficha__cabeza-mano { display: none !important; } /* en las colecciones solo el nombre de la colección */
+.pv-titulo--mano { display: flex; align-items: flex-end; justify-content: center; gap: 10px; font-family: var(--font-type); font-size: 14px; }
+.pv-titulo--mano .pv-ficha__titulo-mano { margin: 0; }
+.pv-ficha__titulo-mano--sonidos-del-verano { height: 55px; margin: -6px 0 4px -4px; }
+.pv-ficha__titulo-mano--bajo-tensi-n { height: 92px; margin: -8px 0 -22px -4px; }
+.pv-ficha__titulo-mano--uno-m-s { height: 66px; margin: -8px 0 4px -4px; }
+.pv-ficha__titulo-mano--running-love { height: 88px; margin: -8px 0 -16px -4px; }
+.pv-ficha__titulo-mano--entre-la-tradici-n-y-la-extinci-n { height: 96px; margin: -4px 0 0 -4px; }
+.pv-ficha__cabeza--palabras { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px 14px; }
+.pv-ficha__palabra-mano { display: block; height: 36px; width: auto; max-width: 100%; }
+.pv-ficha__titulo-mano--chachi-piruli { height: 60px; margin: -6px 0 4px -4px; }
+.pv-ficha--corto p.pv-ficha__etiqueta { font-family: var(--font-type); font-size: inherit; letter-spacing: inherit; }
+.pv-ficha--movil { display: none; }
+/* a la izquierda: al bajar a una serie, el título se va y aparece su ficha */
+.pv-ficha-izq {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(100%, 26rem);
+  opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility 0s linear .45s;
+}
+.proyecto-vista.pv--ficha .pv-titulo { opacity: 0; }
+.proyecto-vista.pv--ficha:not(.pv--grande):not(.pv--video) .pv-ficha-izq { opacity: 1; visibility: visible; transition: opacity .45s ease .15s, visibility 0s; }
+.pv-ficha:not(.pv-ficha--corto) p:nth-child(2) { margin-bottom: 10px; }
+.pv-ficha a { text-decoration: none; }
+.pv-foto {
+  flex: none; width: 62%; padding: 0; border: 0; background: none; cursor: zoom-in; text-align: left;
+  transition: width .55s cubic-bezier(.25,.1,.25,1);
+}
+.pv-foto img { display: block; width: 100%; height: auto; box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35); }
+.pv-foto .pv-vacia { width: 100%; }
+.pv-foto--vacia { cursor: default; }
+.pv-foto.pv-foto--encuadre img, .proyecto-vista .pv-foto.pv-foto--encuadre img { aspect-ratio: 9 / 10; height: auto; object-fit: cover; }
+.pv-foto--video { width: 100%; }
+.pv-foto--video video { display: block; width: 100%; height: auto; box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35); }
+.pv-comentario__texto { white-space: pre-line; }
+/* Serie de vídeo: el film ocupa directamente dos tercios del ancho y los detalles quedan a la izquierda */
+.proyecto-vista.pv--video { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+.proyecto-vista.pv--video .pv-titulo { opacity: 0; }
+.proyecto-vista.pv--video .pv-comentario { width: min(100%, 46ch); }
+.pv-comentario .pv-ficha { font-size: 13px; white-space: normal; }
+.proyecto-vista.pv--video .pv-comentario { opacity: 1; visibility: visible; transition: opacity .45s ease .15s, visibility 0s; }
+.proyecto-vista.pv--video .pv-carrusel { justify-content: center; padding-bottom: 0; overflow: hidden; }
+.proyecto-vista.pv--grande .pv-portada { visibility: hidden; }
+/* vídeos de YouTube: en el proyecto, en silencio y en bucle (el clic lo recoge el botón); en el visor, con sonido y controles */
+.pv-foto--yt { display: flex; flex-direction: column; gap: 14px; width: 100%; cursor: default; }
+.pv-yt__marco { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.pv-yt__marco .pv-yt__pendiente { position: absolute; inset: 0; aspect-ratio: auto; }
+.pv-yt__marco iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.pv-yt__ver { align-self: flex-start; font-size: 13px; letter-spacing: 0.03em; color: var(--ink); text-decoration: none; }
+.pv-yt__ver:hover { color: var(--hover); }
+.pv-info__boton { display: none; }
+.visor__yt { width: min(100%, calc((100vh - 2 * clamp(56px, 8vh, 80px)) * 16 / 9)); aspect-ratio: 16 / 9; cursor: default; }
+.visor__yt iframe { display: block; width: 100%; height: 100%; border: 0; }
+.visor__yt[hidden] { display: none; }
+.visor--yt .visor__pie { display: none; }
+.proyecto-vista.pv--video .pv-foto--video { width: 100%; cursor: zoom-in; }
+.proyecto-vista.pv--video .pv-foto--video video { max-height: 100%; object-fit: contain; }
+.pv-foto:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+.proyecto-vista.pv--grande .pv-foto { width: 100%; }
+/* proyectos de fotos: el recorrido va centrado en la página; el título / la ficha quedan en el hueco de la izquierda */
+@media (min-width: 761px) {
+  /* título + fotos forman un bloque centrado en la página */
+  .proyecto-vista:not(.pv--video) { grid-template-columns: minmax(0, 1fr) minmax(0, 18rem) minmax(0, 34vw) minmax(0, 1fr); transition: grid-template-columns .55s cubic-bezier(.25,.1,.25,1); }
+  .proyecto-vista:not(.pv--video) .pv-izq { grid-column: 2; }
+  .proyecto-vista:not(.pv--video) .pv-der { grid-column: 3; }
+  .proyecto-vista:not(.pv--video) .pv-ficha-izq, .proyecto-vista:not(.pv--video) .pv-titulo { width: 100%; }
+  .proyecto-vista:not(.pv--video) .pv-carrusel { align-items: center; }
+  .proyecto-vista:not(.pv--video) .pv-foto { width: 100%; }
+  .proyecto-vista:not(.pv--video) .pv-portada { justify-content: center; }
+  /* todas las imágenes (portada incluida) con el mismo ancho, alineadas exactamente una encima de otra */
+  .proyecto-vista:not(.pv--video) .pv-portada { height: auto !important; }
+  .proyecto-vista:not(.pv--video) .pv-portada__foto { width: 100%; max-width: 100%; max-height: none; height: auto; }
+  .proyecto-vista:not(.pv--video) .pv-foto img { width: 100%; height: auto; }
+  .proyecto-vista.pv--grande:not(.pv--video) { grid-template-columns: minmax(0, .35fr) minmax(0, 18rem) minmax(0, 50vw) minmax(0, .35fr); }
+  .proyecto-vista.pv--centro:not(.pv--video) { grid-template-columns: minmax(0, 1fr) minmax(0, 34vw) minmax(0, 1fr); }
+  .proyecto-vista.pv--centro.pv--grande:not(.pv--video) { grid-template-columns: minmax(0, 1fr) minmax(0, 50vw) minmax(0, 1fr); }
+  .proyecto-vista.pv--centro:not(.pv--video) .pv-der { grid-column: 2; }
+  .proyecto-vista.pv--centro:not(.pv--video) .pv-izq { display: none; }
+}
+
+/* cambio de colección: fundido en lugar de desplazamiento */
+.proyecto-vista .pv-izq, .proyecto-vista .pv-der, .proyecto-vista .pv-cubierta { transition-property: opacity, transform; transition-duration: .3s; transition-timing-function: ease; }
+.proyecto-vista.pv--fundido .pv-izq, .proyecto-vista.pv--fundido .pv-der, .proyecto-vista.pv--fundido .pv-cubierta { opacity: 0 !important; }
+.proyecto-vista.pv--sin-transicion .pv-izq, .proyecto-vista.pv--sin-transicion .pv-der, .proyecto-vista.pv--sin-transicion .pv-cubierta { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { .proyecto-vista .pv-izq, .proyecto-vista .pv-der, .proyecto-vista .pv-cubierta { transition: none; } }
+
+/* cubierta del proyecto: foto entera centrada en la página y el nombre partido a los lados, como en la página de inicio */
+.proyecto-vista { position: relative; }
+.pv-cubierta { display: none; }
+.pv-portada__nombre { display: none; }
+.pv-nombre-mano { display: block; height: clamp(54px, 5.2vw, 76px); width: auto; max-width: 78%; object-fit: contain; margin: 0 auto; }
+/* misma altura de letra en todas las portadas: estas palabras tienen las minúsculas más grandes en proporción */
+.pv-nombre-mano--lamore, .pv-nombre-mano--sublime { height: clamp(40px, 3.9vw, 56px); }
+.pv-nombre-mano--helga { height: clamp(72px, 6.8vw, 98px); }
+.pv-nombre-mano--stills { height: clamp(46px, 4.4vw, 64px); }
+@media (max-width: 760px) { .pv-nombre-mano { height: 64px; margin: 0; } .pv-portada__nombre--der .pv-nombre-mano { margin-left: auto; } }
+@media (min-width: 761px) {
+  .pv-cubierta {
+    display: grid; position: absolute; inset: 56px 0 64px; z-index: 2; pointer-events: none;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr);
+    align-items: center; column-gap: 0;
+    transform-origin: 50% 40%;
+  }
+  .pv-cubierta__nombre {
+    margin: 0; font-family: var(--font-name); font-weight: 400; font-size: clamp(26px, 2.4vw, 38px);
+    line-height: 1.1; letter-spacing: 0.02em;
+  }
+  /* cada palabra, justo a mitad de camino entre la foto y el margen */
+  .pv-cubierta__nombre--izq, .pv-cubierta__nombre--der { justify-self: center; text-align: center; }
+  .pv-cubierta__marco { height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .pv-cubierta__marco img {
+    display: block; max-height: 100%; max-width: 34vw; width: auto; height: auto;
+    box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35);
+  }
+  /* el hueco de la portada en el recorrido queda vacío: la foto está en la cubierta */
+  .proyecto-vista.pv--con-cubierta .pv-portada__foto { display: none; }
+  .proyecto-vista.pv--con-cubierta .pv-titulo { opacity: 0; }
+  .proyecto-vista.pv--grande .pv-cubierta, .proyecto-vista.pv--video .pv-cubierta { display: none; }
+}
+@media (max-width: 760px) {
+  .proyecto-vista.pv--con-cubierta .pv-portada { flex-direction: column; align-items: stretch; gap: 14px; }
+  .proyecto-vista.pv--con-cubierta .pv-portada__foto { aspect-ratio: auto; width: 100%; height: auto; }
+  .pv-portada__nombre { display: block; margin: 0; font-family: var(--font-name); font-weight: 400; font-size: 30px; line-height: 1.1; letter-spacing: 0.02em; }
+  .pv-portada__nombre--der { text-align: right; }
+  .proyecto-vista.pv--con-cubierta:not(.pv--video) .pv-titulo { display: none; }
+}
+
+.pv-desplegable {
+  position: fixed; z-index: 15; left: var(--gutter); right: var(--gutter);
+  bottom: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-bottom, 0px));
+  display: flex; justify-content: space-between; align-items: baseline; gap: 24px;
+  animation: subir-desplegable .6s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes subir-desplegable { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
+.pv-desplegable button {
+  background: none; border: 0; padding: 0; cursor: pointer; white-space: nowrap;
+  font: inherit; font-size: 15px; letter-spacing: 0.01em; color: var(--ink);
+}
+.pv-desplegable button:hover { color: var(--hover); }
+.pv-desplegable button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.pv-desplegable button:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
+
+.visor {
+  position: fixed; inset: 0; z-index: 60;
+  background: var(--bg);
+  display: grid; place-items: center;
+  padding: clamp(56px, 8vh, 80px) var(--gutter);
+  opacity: 0; visibility: hidden;
+  transition: opacity .35s ease, visibility 0s linear .35s;
+  cursor: zoom-out;
+}
+.visor.abierto { opacity: 1; visibility: visible; transition: opacity .35s ease, visibility 0s; }
+.visor video { max-width: 100%; max-height: calc(100vh - 2 * clamp(56px, 8vh, 80px)); width: auto; height: auto; cursor: pointer; }
+.visor img[hidden], .visor video[hidden] { display: none; }
+/* foto a pantalla completa: solo la imagen, sin pie ni botón */
+.visor:not(.visor--video) .visor__pie, .visor:not(.visor--video) .visor__cerrar { display: none; }
+.visor:not(.visor--video) { padding: clamp(16px, 3vh, 32px); }
+.visor:not(.visor--video) img { max-height: calc(100vh - 2 * clamp(16px, 3vh, 32px)); }
+.visor img { max-width: 100%; max-height: calc(100vh - 2 * clamp(56px, 8vh, 80px)); width: auto; height: auto; object-fit: contain; }
+.visor__cerrar {
+  position: fixed; top: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-top, 0px)); right: var(--gutter);
+  background: none; border: 0; padding: 6px 0; cursor: pointer;
+  font: inherit; font-size: 15px; letter-spacing: 0.04em; color: var(--ink);
+}
+.visor__cerrar:hover { color: var(--hover); }
+.visor__pie {
+  position: fixed; bottom: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-bottom, 0px)); left: 0; right: 0;
+  margin: 0; text-align: center; font-size: 13px; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; white-space: pre;
+}
+@media (prefers-reduced-motion: reduce) { .visor, .pv-portada, .pv-carrusel, .pv-foto, .pv-titulo, .pv-comentario { transition: none; } .pv-desplegable { animation: none; } }
+@media (max-width: 760px) {
+  .proyecto-vista {
+    grid-column: 1; grid-row: 4; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto;
+    padding-top: 0; row-gap: 20px;
+  }
+  body.modo-proyecto .portada { height: auto; min-height: 100%; }
+  .pv-izq { grid-row: 1; justify-content: flex-start; }
+  .pv-titulo { font-size: 22px; }
+  .pv-comentario { position: static; transform: none; width: auto; display: none; }
+  .proyecto-vista.pv--grande .pv-titulo { display: none; }
+  .proyecto-vista.pv--grande .pv-comentario, .proyecto-vista.pv--video .pv-comentario { display: flex; }
+  .proyecto-vista.pv--video .pv-titulo { display: none; }
+  .proyecto-vista.pv--video { grid-template-columns: minmax(0, 1fr); }
+  .proyecto-vista.pv--video .pv-izq { grid-row: 2; }
+  .proyecto-vista.pv--video .pv-der { grid-row: 1; }
+  .pv-der { grid-column: 1; grid-row: 2; }
+  .pv-portada__foto { width: 100%; height: auto; }
+  .pv-carrusel { position: static; overflow: visible; padding-bottom: 24px; }
+  .pv-cabecera { margin-top: 48px; }
+  .pv-ficha--movil { display: flex; margin-top: 14px; }
+  .pv-ficha-izq { display: none; }
+  .proyecto-vista.pv--ficha .pv-titulo { opacity: 1; }
+  .pv-foto { width: 78%; }
+  .proyecto-vista.pv--con-cubierta .pv-portada .pv-portada__foto { width: 78%; align-self: center; }
+  .proyecto-vista.pv--grande .pv-foto { width: 100%; }
+  .pv-desplegable { left: 0; right: 0; bottom: 0; padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom, 0px)); background: var(--bg); gap: 12px; animation: none; }
+  .pv-desplegable button { font-size: 13px; white-space: normal; text-align: center; }
+  /* cortos en el móvil: vídeo de borde a borde, debajo solo el título y "info +"; el texto se despliega */
+  .proyecto-vista.pv--video .pv-der { margin-inline: calc(-1 * var(--gutter)); }
+  .proyecto-vista.pv--video .pv-foto--yt, .proyecto-vista.pv--video .pv-foto--video { width: 100%; gap: 8px; }
+  .proyecto-vista.pv--video .pv-carrusel { padding-bottom: 0; }
+  .proyecto-vista.pv--video .pv-yt__ver { align-self: flex-end; font-size: 11px; padding-inline: var(--gutter); }
+  .pv-ficha--corto .pv-ficha__cabeza { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 0 !important; }
+  .pv-ficha--corto .pv-ficha__cabeza img { zoom: .72; }
+  .pv-info__boton { display: block; flex: none; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 13px; letter-spacing: 0.03em; color: var(--ink); cursor: pointer; }
+  .pv-info__boton[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+  .pv-ficha--corto > p:not(.pv-ficha__cabeza), .pv-ficha--corto > .pv-creditos, .pv-ficha--corto > .pv-creditos__boton { display: none; }
+  .pv-ficha--corto.info-abierta > p:not(.pv-ficha__cabeza) { display: block; }
+  .pv-ficha--corto.info-abierta > .pv-creditos.abierto { display: grid; }
+  /* sin botón de créditos abajo en los cortos: van dentro de "info" */
+  .proyecto-vista.pv--creditos-abajo .pv-desplegable { display: none; }
+  /* el vídeo y su título centrados en la pantalla al abrir */
+  .proyecto-vista.pv--video .pv-der { margin-top: max(0px, calc(50svh - 28.125vw - 150px)); }
+  /* con la info abierta la ficha ocupa la pantalla entera, para que al bajar el vídeo quede fuera */
+  .pv-ficha--corto.info-abierta { display: flex; flex-direction: column; justify-content: center; min-height: calc(100svh - 70px); padding-bottom: 20px; }
+  .pv-ficha--corto .pv-ficha__dentro { padding-left: 0; }
+  .proyecto-vista.pv--info .pv-yt__ver { visibility: hidden; }
+  .pv-ficha--corto p { font-size: 12px; line-height: 1.5; }
+  body.modo-proyecto .portada { padding-bottom: 72px; }
+  .pv-portada__foto { aspect-ratio: 9 / 10; }
+}
+</style>
+<main class="portada">
+  <nav class="menu" aria-label="Principal">
+    <a href="#panel-about" data-panel="about" aria-controls="panel-about" aria-expanded="false">about</a>
+    <a href="#archive" class="enlace-archive" id="abrir-archive">archive</a>
+    <a href="#panel-contact" data-panel="contact" aria-controls="panel-contact" aria-expanded="false">contact</a>
+  </nav>
+
+  <h1 class="nombre nombre--izq"><img class="firma" src="img/firma-patricia.svg" alt="Patricia"></h1>
+  <picture style="display: contents">
+    <source media="(max-width: 760px)" srcset="img/portada-movil.webp" width="720" height="1590">
+    <img class="bucle" src="img/portada.webp" width="1920" height="1080"
+       alt="Selección de fotografías de Patricia Buján que se van sustituyendo en bucle">
+  </picture>
+  <p class="nombre nombre--der"><img class="firma firma--bujan" src="img/firma-bujan.svg" alt="Buján"></p>
+
+  <section class="archivo" id="archive" aria-label="Archive">
+    <div class="archivo__fila">
+      <button type="button" class="proyecto" data-tipo="photo" data-id="2">
+        <span class="proyecto__num">01.</span>
+        <span class="proyecto__foto"><img src="img/archive/still-life.webp?v=3" width="1060" height="1500" alt="stills" loading="lazy"></span>
+        <span class="proyecto__titulo">stills</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="photo film" data-id="1">
+        <span class="proyecto__num">02.</span>
+        <span class="proyecto__foto"><img src="img/archive/lamore-portada.webp?v=2" width="1060" height="1500" alt="l'amore sublime" loading="lazy"></span>
+        <span class="proyecto__titulo proyecto__titulo--dos">l'amore sublime<br>x lili archive</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="9">
+        <span class="proyecto__num">03.</span>
+        <span class="proyecto__foto"><img src="img/archive/olvido.webp" width="1060" height="1500" alt="olvido" loading="lazy"></span>
+        <span class="proyecto__titulo">olvido</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="5">
+        <span class="proyecto__num">04.</span>
+        <span class="proyecto__foto"><img src="img/archive/chachi-piruli-poster.webp" width="1060" height="1500" alt="chachi piruli, póster" loading="lazy"></span>
+        <span class="proyecto__titulo">chachi piruli</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="photo" data-id="3">
+        <span class="proyecto__num">05.</span>
+        <span class="proyecto__foto"><img src="img/archive/for-helga.webp?v=5" width="1060" height="1500" alt="helga" loading="lazy"></span>
+        <span class="proyecto__titulo">helga</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="11">
+        <span class="proyecto__num">06.</span>
+        <span class="proyecto__foto"><img src="img/archive/soltar.webp?v=2" width="1060" height="1500" alt="soltar" loading="lazy"></span>
+        <span class="proyecto__titulo">soltar</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="8">
+        <span class="proyecto__num">07.</span>
+        <span class="proyecto__foto"><img src="img/archive/sonidos-del-verano.webp" width="1060" height="1500" alt="sonidos del verano" loading="lazy"></span>
+        <span class="proyecto__titulo">sonidos del verano</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="7">
+        <span class="proyecto__num">08.</span>
+        <span class="proyecto__foto"><img src="img/archive/bajo-tension-poster.webp" width="1060" height="1500" alt="bajo tensión, póster" loading="lazy"></span>
+        <span class="proyecto__titulo">bajo tensión</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="4">
+        <span class="proyecto__num">09.</span>
+        <span class="proyecto__foto"><img src="img/archive/entre-tradicion-portada.webp?v=2" width="1060" height="1500" alt="entre la tradición y la extinción" loading="lazy"></span>
+        <span class="proyecto__titulo proyecto__titulo--dos">entre la tradición<br>y la extinción</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="6">
+        <span class="proyecto__num">10.</span>
+        <span class="proyecto__foto"><img src="img/archive/uno-mas-poster.webp" width="1060" height="1500" alt="uno más, póster" loading="lazy"></span>
+        <span class="proyecto__titulo">uno más</span>
+      </button>
+      <button type="button" class="proyecto" data-tipo="film" data-id="13">
+        <span class="proyecto__num">11.</span>
+        <span class="proyecto__foto"><img src="img/archive/running-love.webp?v=3" width="1060" height="1500" alt="running love" loading="lazy"></span>
+        <span class="proyecto__titulo">running love</span>
+      </button>
+    </div>
+    <p class="archivo__vacio" hidden>no projects here yet</p>
+  </section>
+  <div class="filtro" role="group" aria-label="Filtrar proyectos">
+    <button type="button" data-filtro="all" aria-pressed="true">all <span class="cuenta"></span></button>
+    <button type="button" data-filtro="photo" aria-pressed="false">photo <span class="cuenta"></span></button>
+    <button type="button" data-filtro="film" aria-pressed="false">film <span class="cuenta"></span></button>
+  </div>
+  <section class="proyecto-vista" id="proyecto-vista" aria-label="Proyecto">
+  </section>
+  <p class="progreso" id="progreso" aria-live="off">0%</p>
+  <button class="archivo__salir" type="button" id="salir-archive" aria-label="Cerrar archive y volver a la portada">(X)</button>
+
+  <p class="contador" aria-hidden="true"><span id="tiempo">00:00</span> - <span id="total">00:07</span></p>
+</main>
+
+<div class="hoja" id="hoja">
+  <button class="hoja__salir" type="button" id="salir" aria-label="Cerrar y volver a la portada">(X)</button>
+  <div class="hoja__fila">
+    <section class="seccion seccion--about" id="panel-about" aria-label="About">
+      <h2><img class="firma" src="img/firma-patricia.svg" alt="Patricia"></h2>
+      <div class="texto">
+        <p>Visual creator and art director working across still and moving image, with a focus on fashion and artistic editorial projects.</p>
+        <p>Based in Madrid. Finishing a double degree in Audiovisual Communication and Business Administration, graduating in 2027.</p>
+      </div>
+    </section>
+
+    <section class="seccion seccion--contact" id="panel-contact" aria-label="Contact">
+      <h2><img class="firma" src="img/firma-bujan.svg" alt="Buján"></h2>
+      <dl class="datos">
+        <dt>email</dt><dd><a href="mailto:patriciabuujan@gmail.com">patriciabuujan@gmail.com</a></dd>
+        <dt>instagram</dt><dd><a href="https://www.instagram.com/buujan_/" target="_blank" rel="noopener">@buujan_</a></dd>
+        <dt>whatsapp</dt><dd><a href="https://wa.me/34658423181" target="_blank" rel="noopener">+34 658 42 31 81</a></dd>
+      </dl>
+    </section>
+  </div>
+  <p class="hoja__pie">© 2026 Patricia Buján</p>
+</div>
+
+<div class="visor" id="visor" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button class="visor__cerrar" type="button" id="visor-cerrar" aria-label="Cerrar foto">(X)</button>
+  <img id="visor-img" src="" alt="">
+  <video id="visor-video" playsinline preload="none" hidden></video>
+  <div class="visor__yt" id="visor-yt" hidden></div>
+  <p class="visor__pie" id="visor-pie"></p>
+</div>
+
+<script>
+(function () {
+  // Duración real del bucle en segundos (suma de los tiempos del WebP)
+  var DURACION = 7.374;
+  var tiempo = document.getElementById('tiempo');
+  var total = document.getElementById('total');
+  var img = document.querySelector('.bucle');
+  function mmss(s) {
+    s = Math.floor(s);
+    return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  }
+  total.textContent = mmss(DURACION);
+  var inicio = null;
+  function arrancar() { if (inicio === null) { inicio = performance.now(); paso(); } }
+  function paso() {
+    var t = ((performance.now() - inicio) / 1000) % DURACION;
+    tiempo.textContent = mmss(t);
+    setTimeout(paso, 200);
+  }
+  if (img.complete) arrancar(); else img.addEventListener('load', arrancar);
+})();
+</script>
+
+<script>
+(function () {
+  function panel(n) { return document.getElementById('panel-' + n); }
+  function enlace(n) { return document.querySelector('[data-panel="' + n + '"]'); }
+  var hoja = document.getElementById('hoja');
+  function poner(n, abrir) {
+    panel(n).classList.toggle('abierta', abrir);
+    enlace(n).setAttribute('aria-expanded', abrir ? 'true' : 'false');
+    hoja.classList.toggle('visible', !!document.querySelector('.seccion.abierta'));
+  }
+  function alternar(n) {
+    var abrir = !panel(n).classList.contains('abierta');
+    poner(n, abrir);
+  }
+  document.querySelectorAll('[data-panel]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); alternar(a.dataset.panel); });
+  });
+  document.getElementById('salir').addEventListener('click', function () { poner('about', false); poner('contact', false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { poner('about', false); poner('contact', false); }
+  });
+})();
+</script>
+
+<script>
+(function () {
+  var cuerpo = document.body;
+  function abrirArchive(e) {
+    if (e) e.preventDefault();
+    // si ya estás en la lista de archive, volver a pulsar "archive" te lleva a la portada
+    if (cuerpo.classList.contains('modo-archive') && !cuerpo.classList.contains('modo-proyecto')) {
+      cuerpo.classList.remove('modo-archive'); return;
+    }
+    cuerpo.classList.remove('modo-proyecto'); cuerpo.classList.add('modo-archive');
+  }
+  function cerrarArchive() {
+    if (cuerpo.classList.contains('modo-proyecto')) { cuerpo.classList.remove('modo-proyecto'); return; }
+    cuerpo.classList.remove('modo-archive');
+  }
+  document.getElementById('abrir-archive').addEventListener('click', abrirArchive);
+  document.getElementById('salir-archive').addEventListener('click', cerrarArchive);
+  var botones = document.querySelectorAll('[data-filtro]');
+  var proyectos = document.querySelectorAll('.proyecto');
+  var vacio = document.querySelector('.archivo__vacio');
+  var archivo = document.getElementById('archive');
+  var fila = document.querySelector('.archivo__fila');
+  function anclarFiltro() {
+    if (!cuerpo.classList.contains('modo-archive') || window.matchMedia('(max-width: 760px)').matches) {
+      fila.style.paddingTop = ''; fila.style.paddingBottom = ''; fila.style.rowGap = ''; return;
+    }
+    // cada fila de tres ocupa una pantalla; al bajar aparece la siguiente, centrada igual
+    var H = archivo.clientHeight;
+    var tarjeta = fila.querySelector('.proyecto:not([hidden])'); if (!tarjeta) return;
+    var foto = tarjeta.querySelector('.proyecto__foto');
+    // la primera fila empieza cerca del menú, sin un gran hueco arriba
+    var arriba = Math.round(Math.min(64, Math.max(28, H * 0.06)));
+    fila.style.paddingTop = arriba + 'px';
+    fila.style.rowGap = '';
+    fila.style.paddingBottom = '120px';
+    fila.style.setProperty('--margen-fila', arriba + 'px');
+  }
+  window.addEventListener('resize', anclarFiltro);
+  document.getElementById('abrir-archive').addEventListener('click', function () { archivo.scrollTop = 0; requestAnimationFrame(anclarFiltro); });
+  botones.forEach(function (b) {
+    var f = b.dataset.filtro, n = 0;
+    proyectos.forEach(function (p) { if (f === 'all' || p.dataset.tipo.split(' ').indexOf(f) !== -1) n++; });
+    b.querySelector('.cuenta').textContent = '(' + n + ')';
+  });
+  botones.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.dataset.filtro, visibles = 0;
+      botones.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      proyectos.forEach(function (p) {
+        var ver = f === 'all' || p.dataset.tipo.split(' ').indexOf(f) !== -1;
+        p.hidden = !ver; if (ver) visibles++;
+      });
+      vacio.hidden = visibles > 0;
+      archivo.scrollTop = 0; anclarFiltro();
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !document.querySelector('.seccion.abierta')) cerrarArchive();
+  });
+})();
+</script>
+
+<script>
+(function () {
+  // Proyectos y sus series (fotos PROVISIONALES sacadas del vídeo de portada; null = marco de referencia vacío).
+  var PROYECTOS = {
+    1: { titulo: "l'amore sublime", partes: ["l'amore", 'sublime'], portada: 'img/proyectos/luce-02.webp', series: [
+      { nombre: 'look 01 - la luce', fotos: ['laluce-15', 'laluce-01', 'laluce-03', 'laluce-02', 'laluce-12', 'laluce-14', 'laluce-05', 'laluce-09', 'laluce-13', 'laluce-07', 'laluce-11', 'laluce-04', 'laluce-16', 'laluce-10'] },
+      { nombre: 'look 02 - la passione', fotos: ['lapassione-10', 'lapassione-20', 'lapassione-14', 'lapassione-13', 'lapassione-07', 'lapassione-08', 'lapassione-11', 'lapassione-16', 'lapassione-09', 'lapassione-19', 'lapassione-02', 'lapassione-18', 'lapassione-17', 'lapassione-15', 'lapassione-01', 'lapassione-04', 'lapassione-12', 'lapassione-03', 'lapassione-06'] },
+      { nombre: 'fashion film', video: 'video/lidia-fashion-film.mp4', poster: 'img/proyectos/fashion-film.webp',
+        ficha: ["l\u00b4amore sublime", 'fashion film',
+          ['lili__archv', 'design and creative direction'], ['buujan_', 'photo and fashion film'], ['bypauladlct', 'talent'],
+          ['jesicaadq', 'MUAH'], ['nicolgmz_', 'styling and photo assistant']] }
+    ] },
+    2: { titulo: 'stills', partes: ['stills', ''], portada: 'img/proyectos/still-07.webp', series: [
+      { nombre: 'stills', fotos: ['still-07', 'still-05', 'still-06', 'still-02', 'still-01', 'still-03', 'still-04'] }
+    ] },
+    3: { titulo: 'helga', partes: ['helga', ''], portada: 'img/proyectos/helga-08.webp', series: [
+      { nombre: 'collection 01', encuadre: '50% 74%', fotos: ['helga-01', 'helga-02', 'helga-03', 'helga-04', 'helga-05', 'helga-06', 'helga-07', 'helga-08'] },
+      { nombre: 'collection 02', encuadre: '50% 76%', fotos: ['helga-09', 'helga-10', 'helga-11', 'helga-12', 'helga-13', 'helga-14', 'helga-15', 'helga-16'] },
+      { nombre: 'collection 03', encuadre: '50% 71%', fotos: ['helga-17', 'helga-18', 'helga-19', 'helga-20', 'helga-21', 'helga-22', 'helga-23', 'helga-24', 'helga-25', 'helga-26', 'helga-27', 'helga-28', 'helga-29', 'helga-30', 'helga-31', 'helga-32', 'helga-33', 'helga-34', 'helga-35', 'helga-36'] }
+    ] }
+  };
+  for (var n = 4; n <= 9; n++) {
+    PROYECTOS[n] = { titulo: '[proyecto 0' + n + ']', series: [
+      { nombre: '[serie 01]', fotos: [null, null, null] },
+      { nombre: '[serie 02]', fotos: [null, null] }
+    ] };
+  }
+  // vídeos que se ven desde YouTube (id del vídeo)
+  PROYECTOS[4] = { titulo: 'entre la tradición y la extinción', series: [
+    { nombre: 'documentary', youtube: 't_sxIb8DF8Q', ficha: ['entre la tradición y la extinción', 'documentary',
+      'This documentary sets out to show the reality hidden behind traditional markets. To do so, we went to the Mercado de San Isidro, in the Madrid neighbourhood of Carabanchel.',
+      '',
+      'my role', 'Editing, post-production and title design',
+      '',
+      'crew',
+      'Alejandro Alonso, Patricia García, Gonzalo Mínguez, Paula Peláez and Eva Yáñez',
+      '',
+      'Made for Información Audiovisual at Universidad Rey Juan Carlos.'] }
+  ] };
+  PROYECTOS[5] = { titulo: 'chachi piruli', series: [
+    { nombre: 'short film', youtube: 'WdJx5g0RaMs', ficha: ['chachi piruli', 'short film',
+      'Inspired by M.A.P.S by Amaia, Chachi Piruli is a short film about the complex relationship between a mother and her daughter.',
+      '',
+      'my role', 'Assistant director, editing and title design',
+      '',
+      'crew',
+      'Marina García, Patricia García, Gonzalo Mínguez, Carlota Núñez, Paula Peláez, Jessica Torres and Eva Yáñez',
+      '',
+      'Made for Realización Audiovisual (Cine) at Universidad Rey Juan Carlos.'] }
+  ] };
+  PROYECTOS[6] = { titulo: 'uno más', series: [
+    { nombre: 'short film', youtube: 'vpp6fmamc8Q', ficha: ['uno más', 'short film',
+      'A group of friends, a YouTube channel and a dangerous habit: sneaking into abandoned houses to hunt for ghosts. A homemade attempt at a horror short film.',
+      '',
+      'my role', 'Art direction, assistant director, editing and title design',
+      '',
+      'crew',
+      'Marina García, Patricia García, Gonzalo Mínguez, Carlota Núñez, Paula Peláez, Jessica Torres and Eva Yáñez',
+      '',
+      'Made for Realización Audiovisual (Cine) at Universidad Rey Juan Carlos.'] }
+  ] };
+  PROYECTOS[7] = { titulo: 'bajo tensión', series: [
+    { nombre: 'short film', youtube: 'Ra3VC30cE7A', ficha: ['bajo tensión', 'short film',
+      'When the lights go out, the lives of three different people begin to cross. A suspense short film built from three stories linked by a single blackout, and the first one we made together as a group.',
+      '',
+      'my role', 'Director, director of photography, editing and title design',
+      '',
+      'crew',
+      'Marina García, Patricia García, Gonzalo Mínguez, Carlota Núñez, Paula Peláez, Jessica Torres and Eva Yáñez',
+      '',
+      'Made for Realización Audiovisual (Cine) at Universidad Rey Juan Carlos.'] }
+  ] };
+  // pendiente: enlace de YouTube, portada, texto y crew
+  PROYECTOS[8] = { titulo: 'sonidos del verano', series: [
+    { nombre: 'film', youtube: null, ficha: ['sonidos del verano', 'film',
+      'The sounds that, the moment I hear them, tell me it\u2019s summer. They carry me back to long afternoons of boredom and quiet, where the hours fill with small things and nothing really happens at all.',
+      '',
+      'Made entirely by me.'] }
+  ] };
+  PROYECTOS[9] = { titulo: 'olvido', series: [
+    { nombre: 'music film', youtube: 'N6_Jp41Q764', ficha: ['olvido', 'music film',
+      'Based on the song Olvido by Amaral, it tells the story of a woman living with Alzheimer\u2019s who, even as everything else begins to fade, keeps the memories of her partner safe from oblivion. Shot entirely on an iPhone.',
+      '',
+      'Made entirely by me.',
+      '',
+      'Made for Estructura Social Contemporánea at Universidad Rey Juan Carlos.'] }
+  ] };
+  PROYECTOS[11] = { titulo: 'soltar', series: [
+    { nombre: 'short film', youtube: '1wuGJxpnDqY', ficha: ['soltar', 'short film',
+      'This film essay explores the inner journey towards letting go of perfectionism. Through poetic images, shadows, textures and the movements of nature, it offers a sensory experience that goes beyond conventional narrative.',
+      '',
+      'Made entirely by me.'] }
+  ] };
+  PROYECTOS[13] = { titulo: 'running love', series: [
+    { nombre: 'self-promo', youtube: 'Irig0cg03ZU', ficha: ['running love', 'self-promo',
+      'A self-promo for Running Love, our fictional dating show, imagined as part of the Antena 3 schedule.',
+      '',
+      'my role', 'Editing, color grading and post-production',
+      '',
+      'crew',
+      'Alejandro Alonso, Patricia García, Gonzalo Mínguez, Paula Peláez and Eva Yáñez',
+      '',
+      'Made for Producción Audiovisual (TV y Radio) at Universidad Rey Juan Carlos.'] }
+  ] };
+  function esVideo(s) { return !!(s && (s.video || 'youtube' in s)); }
+  function esCorto(s) { return !!(s && 'youtube' in s); }
+  function urlYoutube(id, fondo) {
+    return 'https://www.youtube-nocookie.com/embed/' + id + '?' + (fondo
+      ? 'autoplay=1&mute=1&loop=1&playlist=' + id + '&controls=0&disablekb=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3'
+      : 'autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3');
+  }
+  var cuerpo = document.body;
+  var vista = document.getElementById('proyecto-vista');
+  var visor = document.getElementById('visor');
+  var visorImg = document.getElementById('visor-img');
+  var visorPie = document.getElementById('visor-pie');
+  var progreso = document.getElementById('progreso');
+  var actual = null, actualId = null, serieActual = -1, reales = [], indiceVisor = 0;
+  var carrusel, comentEtiqueta, comentTexto, botonesSerie = [];
+
+  function el(tag, clase, texto) { var e = document.createElement(tag); if (clase) e.className = clase; if (texto != null) e.textContent = texto; return e; }
+  function dos(n) { return String(n).padStart(2, '0'); }
+
+  function abrirProyecto(id) {
+    var p = PROYECTOS[id]; if (!p) return;
+    actual = p; actualId = id; serieActual = -1;
+    vista.innerHTML = '';
+    vista.className = 'proyecto-vista';
+    vista.setAttribute('aria-label', p.titulo);
+    // izquierda: nombre en vertical y, en modo grande, el comentario
+    var izq = el('div', 'pv-izq');
+    var h2 = el('h2', 'pv-titulo');
+    if (TITULOS_MANO[p.titulo]) {
+      // nombre escrito a mano (for helga): "for" a máquina y la palabra a mano
+      h2.classList.add('pv-titulo--mano'); h2.setAttribute('aria-label', p.titulo);
+      var pal2 = p.titulo.split(' ');
+      if (pal2.length > 1) h2.appendChild(el('span', 'pv-ficha__previo', pal2.slice(0, -1).join(' ')));
+      var imh = el('img', 'pv-ficha__titulo-mano pv-ficha__titulo-mano--' + p.titulo.replace(/[^a-z]+/g, '-')); imh.src = TITULOS_MANO[p.titulo]; imh.alt = '';
+      h2.appendChild(imh);
+    } else h2.textContent = p.titulo;
+    izq.appendChild(h2);
+    var com = el('div', 'pv-comentario');
+    comentEtiqueta = el('p', 'pv-comentario__etiqueta');
+    comentTexto = el('p', 'pv-comentario__texto');
+    com.appendChild(comentEtiqueta); com.appendChild(comentTexto);
+    izq.appendChild(com);
+    izq.appendChild(el('div', 'pv-ficha-izq'));
+    // derecha: un único recorrido con la portada y, debajo, las series de fotos una tras otra
+    var der = el('div', 'pv-der');
+    carrusel = el('div', 'pv-carrusel');
+    carrusel.addEventListener('scroll', function () { actualizarProgreso(); comentarioVisible(); efectoPortada(); marcarSerie(); }, { passive: true });
+    der.appendChild(carrusel);
+    // abajo: las series, fijas
+    var des = el('nav', 'pv-desplegable'); des.setAttribute('aria-label', 'Series de ' + p.titulo);
+    if (p.series.length && p.series.every(esCorto)) {
+      // cortos: en lugar del botón con el tipo de pieza, abajo va el desplegable de créditos
+      botonesSerie = [];
+      vista.classList.add('pv--creditos-abajo');
+      var bc = el('button', 'pv-creditos-abajo'); bc.type = 'button'; bc.setAttribute('aria-expanded', 'false');
+      bc.textContent = 'credits'; bc.setAttribute('aria-pressed', 'false');
+      bc.addEventListener('click', function () {
+        var caja = vista.querySelector('.pv-creditos'); if (!caja) return;
+        var ab = caja.classList.toggle('abierto');
+        bc.setAttribute('aria-expanded', ab ? 'true' : 'false'); bc.setAttribute('aria-pressed', ab ? 'true' : 'false');
+      });
+      // solo si la pieza tiene créditos (my role / crew); en las hechas enteras por mí no hay botón
+      var tieneCreditos = p.series.some(function (s) { return (s.ficha || []).some(function (l) { return l === 'crew' || l === 'my role'; }); });
+      if (tieneCreditos) des.appendChild(bc);
+    } else if (p.series.length === 1 && !esVideo(p.series[0])) {
+      // una sola colección (stills): sin botón abajo y el carrusel en el centro de la página
+      botonesSerie = []; vista.classList.add('pv--centro');
+    } else botonesSerie = p.series.map(function (s, k) {
+      var b = el('button', null, s.nombre); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { elegirSerie(k); });
+      des.appendChild(b); return b;
+    });
+    vista.appendChild(izq); vista.appendChild(der); vista.appendChild(des);
+    var red = el('button', 'pv-reducir', '(\u2212)'); red.type = 'button';
+    red.setAttribute('aria-label', 'Ver las fotos pequeñas'); red.title = 'smaller';
+    red.addEventListener('click', reducirFotos);
+    vista.appendChild(red);
+    // clic en el espacio vacío (fuera de las fotos) con las fotos grandes: vuelven a ser pequeñas
+    izq.addEventListener('click', function (e) { if (!e.target.closest('a')) reducirFotos(); });
+    carrusel.addEventListener('click', function (e) { if (e.target === carrusel) reducirFotos(); });
+    cuerpo.classList.add('modo-proyecto', 'con-serie'); cuerpo.classList.remove('con-video');
+    construirRecorrido();
+    if (p.series.length && p.series.every(esVideo)) mostrarVideo(0);
+    window.scrollTo(0, 0);
+    ajustarTitulo();
+  }
+
+  function construirRecorrido() {
+    var p = actual;
+    reales = []; serieActual = -1;
+    carrusel.innerHTML = '';
+    vista.classList.remove('pv--video', 'pv--grande', 'pv--ficha');
+    cuerpo.classList.remove('con-video');
+    var cajaF = vista.querySelector('.pv-ficha-izq'); if (cajaF) cajaF.innerHTML = '';
+    var port = el('div', 'pv-portada');
+    var mini = document.querySelector('.proyecto[data-id="' + actualId + '"] .proyecto__foto img');
+    // portada del proyecto: la foto entera (si existe), si no la miniatura de archive
+    var srcPortada = p.portada || (mini && mini.getAttribute('src'));
+    // el nombre partido a los lados de la foto, como "Patricia" y "Buján" en la página de inicio
+    var partes = p.partes || (function () { var w = p.titulo.split(' '), m = Math.ceil(w.length / 2); return [w.slice(0, m).join(' '), w.slice(m).join(' ')]; })();
+    var viejo = vista.querySelector('.pv-cubierta'); if (viejo) viejo.remove();
+    // los proyectos de fotos no tienen portada: se entra directamente en la primera colección
+    var hayFotos = p.series.some(function (s) { return !esVideo(s); });
+    if (srcPortada) {
+      // en ordenador: capa centrada en toda la página (nombre - foto entera - nombre)
+      var cub = el('div', 'pv-cubierta'); cub.setAttribute('aria-hidden', 'true');
+      // el nombre con la letra a mano de Patricia cuando existe (img/titulos), si no, en texto
+      var nombreEl = function (cls, txt) {
+        var pe = el('p', cls), src = TITULOS_MANO[(txt || '').toLowerCase()];
+        if (src) { var ii = el('img', 'pv-nombre-mano pv-nombre-mano--' + src.replace(/^.*\/|\.svg$/g, '')); ii.src = src; ii.alt = txt; pe.appendChild(ii); } else pe.textContent = txt;
+        return pe;
+      };
+      cub.appendChild(nombreEl('pv-cubierta__nombre pv-cubierta__nombre--izq', partes[0]));
+      var marco = el('div', 'pv-cubierta__marco'), imc = el('img'); imc.src = srcPortada; imc.alt = ''; marco.appendChild(imc); cub.appendChild(marco);
+      var nd = nombreEl('pv-cubierta__nombre pv-cubierta__nombre--der', partes[1]);
+      if (p.sub) nd.appendChild(el('span', 'pv-cubierta__sub', p.sub)); // colaboración, bajo el nombre
+      cub.appendChild(nd);
+      vista.appendChild(cub); vista.classList.add('pv--con-cubierta');
+      // la foto de portada mide exactamente lo mismo de ancho que las del carrusel: el paso de una a otra no se rompe
+      setTimeout(anchoCubierta, 0); setTimeout(anchoCubierta, 350); imc.addEventListener('load', anchoCubierta);
+      // en móvil: nombre arriba, foto entera y nombre abajo, dentro del recorrido
+      port.appendChild(nombreEl('pv-portada__nombre pv-portada__nombre--izq', partes[0]));
+      var im = el('img', 'pv-portada__foto'); im.src = srcPortada; im.alt = p.titulo + ', portada'; port.appendChild(im);
+      var nd2 = nombreEl('pv-portada__nombre pv-portada__nombre--der', partes[1]);
+      if (p.sub) nd2.appendChild(el('span', 'pv-cubierta__sub', p.sub));
+      port.appendChild(nd2);
+    }
+    else port.appendChild(el('div', 'pv-portada__foto pv-vacia', 'portada'));
+    carrusel.appendChild(port);
+    p.series.forEach(function (s, k) {
+      if (esVideo(s)) return;
+      // separador con el nombre de la serie; en móvil lleva debajo la ficha (en ordenador va a la izquierda)
+      var cab = el('div', 'pv-cabecera');
+      cab.appendChild(el('p', 'pv-cabecera__nombre', s.nombre));
+      if (s.ficha) { var fm = crearFicha(s); fm.classList.add('pv-ficha--movil'); cab.appendChild(fm); }
+      cab.dataset.serie = k;
+      carrusel.appendChild(cab);
+      s.fotos.forEach(function (f, i) {
+        var b;
+        if (f) {
+          var nReal = reales.length; reales.push({ f: f, serie: k, n: i });
+          b = el('button', 'pv-foto'); b.type = 'button';
+          b.setAttribute('aria-label', 'Ver foto ' + (i + 1) + ' de ' + s.nombre);
+          var im2 = el('img'); im2.src = 'img/proyectos/' + f + '.webp'; im2.alt = s.nombre + ', foto ' + (i + 1); im2.loading = 'lazy';
+          im2.addEventListener('load', actualizarProgreso);
+          // primera foto de la colección: recortada en 9:10, como portada de la colección
+          if (i === 0 && s.encuadre) { b.classList.add('pv-foto--encuadre'); im2.style.objectPosition = s.encuadre; }
+          b.appendChild(im2);
+          b.addEventListener('click', function () { pulsarFoto(b, nReal); });
+        } else {
+          b = el('div', 'pv-foto pv-foto--vacia');
+          b.appendChild(el('div', 'pv-vacia', 'foto ' + dos(i + 1)));
+          b.addEventListener('click', function () { pulsarFoto(b, -1); });
+        }
+        b.dataset.serie = k; b.dataset.n = i;
+        carrusel.appendChild(b);
+      });
+    });
+    ajustarPortada();
+    carrusel.scrollTop = 0;
+    efectoPortada(); marcarSerie(); actualizarProgreso();
+  }
+
+  // ficha de la serie: un párrafo por línea; las cuentas @ enlazan a Instagram
+  var TITULOS_MANO = { 'olvido': 'img/titulos/olvido.svg', 'soltar': 'img/titulos/soltar.svg', 'chachi piruli': 'img/titulos/chachi-piruli.svg', 'helga': 'img/titulos/helga.svg', "l'amore": 'img/titulos/lamore.svg', 'sublime': 'img/titulos/sublime.svg', 'bajo tensión': 'img/titulos/bajo-tension.svg', 'uno más': 'img/titulos/uno-mas.svg', 'running love': 'img/titulos/running-love.svg', 'stills': 'img/titulos/stills.svg', 'entre la tradición y la extinción': 'img/titulos/entre-tradicion.svg', 'sonidos del verano': 'img/titulos/sonidos-del-verano.svg' };
+  function crearFicha(s) {
+    var f = el('div', 'pv-ficha');
+    // series de fotos sin ficha propia (colecciones, looks): solo el nombre de la serie
+    var lineas = (s.ficha || [s.nombre].concat(s.extra ? [s.extra] : [])).slice();
+    // cortos: el título en Yuji Boku y, tras un guion, el tipo de pieza ("chachi piruli - short film")
+    var comoCorto = esCorto(s) || !!s.video; // el fashion film va como los cortos: título a mano y créditos
+    if (comoCorto) {
+      var cab = el('p', 'pv-ficha__cabeza');
+      var tit = lineas.shift().replace(/[\u00b4`]/g, "'"), timg = TITULOS_MANO[tit.toLowerCase()];
+      var palabras = tit.toLowerCase().split(' ');
+      if (!timg && palabras.length > 1 && palabras.every(function (w) { return TITULOS_MANO[w]; })) {
+        // título formado por palabras escritas a mano por separado (l'amore + sublime)
+        cab.classList.add('pv-ficha__cabeza--palabras'); cab.setAttribute('aria-label', tit);
+        palabras.forEach(function (w) { var wi = el('img', 'pv-ficha__palabra-mano'); wi.src = TITULOS_MANO[w]; wi.alt = ''; cab.appendChild(wi); });
+      } else if (timg) {
+        // título escrito a mano por Patricia (mismo negro y grosor que la firma)
+        var ti = el('img', 'pv-ficha__titulo-mano pv-ficha__titulo-mano--' + tit.toLowerCase().replace(/[^a-z]+/g, '-')); ti.src = timg; ti.alt = tit; cab.appendChild(ti);
+      } else cab.appendChild(el('span', 'pv-ficha__titulo', tit));
+      lineas.shift(); // el tipo de pieza (short film, music film…) ya no se muestra
+      f.appendChild(cab);
+      // móvil: la sinopsis y el "Made for…" se recogen en "info +" junto al título
+      var bi = el('button', 'pv-info__boton', 'info +'); bi.type = 'button'; bi.setAttribute('aria-expanded', 'false');
+      bi.addEventListener('click', function (e) {
+        e.stopPropagation(); var ab = f.classList.toggle('info-abierta');
+        bi.textContent = ab ? 'info \u2212' : 'info +'; bi.setAttribute('aria-expanded', ab ? 'true' : 'false');
+        // con la info abierta salen también los créditos, y la página baja hasta la ficha (el vídeo queda arriba, fuera de la vista)
+        var cj = f.querySelector('.pv-creditos'); if (cj) cj.classList.toggle('abierto', ab);
+        var pv = f.closest('.proyecto-vista'); if (pv) pv.classList.toggle('pv--info', ab);
+        if (ab) setTimeout(function () { window.scrollTo({ top: f.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' }); }, 30);
+        else window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      cab.appendChild(bi);
+      f.classList.add('pv-ficha--corto');
+    }
+    // proyectos de fotos con el nombre escrito a mano: "for" a máquina y "Helga" con su letra
+    if (!s.ficha && TITULOS_MANO[lineas[0]]) {
+      var t0 = lineas.shift(), pm = el('p', 'pv-ficha__cabeza-mano');
+      var pal = t0.split(' ');
+      if (pal.length > 1) pm.appendChild(el('span', 'pv-ficha__previo', pal.slice(0, -1).join(' ')));
+      var im0 = el('img', 'pv-ficha__titulo-mano pv-ficha__titulo-mano--' + t0.replace(/[^a-z]+/g, '-')); im0.src = TITULOS_MANO[t0]; im0.alt = t0;
+      pm.appendChild(im0); f.appendChild(pm);
+    }
+    var dentro = false; // las secciones "my role" y "crew" van sangradas
+    var destino = f;     // en los cortos, desde "my role" / "crew" todo va dentro del desplegable "credits +"
+    lineas.forEach(function (linea) {
+      var par = el('p');
+      if (destino === f && comoCorto && (linea === 'crew' || linea === 'my role')) {
+        var bt = el('button', 'pv-creditos__boton', 'credits +'); bt.type = 'button'; bt.setAttribute('aria-expanded', 'false');
+        var caja = el('div', 'pv-creditos'), dentroCaja = el('div', 'pv-creditos__dentro');
+        caja.appendChild(dentroCaja);
+        bt.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var abierto = caja.classList.toggle('abierto');
+          bt.textContent = abierto ? 'credits \u2212' : 'credits +'; bt.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+        });
+        f.appendChild(bt); f.appendChild(caja); destino = dentroCaja;
+      }
+      if (linea === '') dentro = false;
+      if ((linea === 'crew' || linea === 'my role') && comoCorto) dentro = true;
+      if (dentro) par.classList.add('pv-ficha__dentro');
+      if (Array.isArray(linea)) {
+        var a = el('a', null, '@' + linea[0]);
+        a.href = 'https://www.instagram.com/' + linea[0] + '/'; a.target = '_blank'; a.rel = 'noopener';
+        par.appendChild(a); par.appendChild(document.createTextNode(' ' + linea[1]));
+      } else if (linea === '') par.classList.add('pv-ficha__hueco');
+      else if ((linea === 'crew' || linea === 'my role') && comoCorto) { par.classList.add('pv-ficha__etiqueta'); par.textContent = linea; }
+      else par.textContent = linea;
+      // la línea de la asignatura ("Made for…") va siempre a la vista, fuera del desplegable de créditos
+      if (destino !== f && typeof linea === 'string' && /^Made for /.test(linea)) { par.classList.remove('pv-ficha__dentro'); par.style.marginTop = '6px'; f.appendChild(par); }
+      else destino.appendChild(par);
+    });
+    return f;
+  }
+  // la portada ocupa todo el alto disponible; al bajar se desvanece y se hace pequeña
+  function ajustarPortada() {
+    var port = carrusel && carrusel.querySelector('.pv-portada');
+    if (port && !window.matchMedia('(max-width: 760px)').matches) { port.style.height = ''; port.style.minHeight = carrusel.clientHeight + 'px'; }
+    else if (port) { port.style.height = ''; port.style.minHeight = ''; }
+  }
+  function efectoPortada() {
+    var port = carrusel && carrusel.querySelector('.pv-portada'); if (!port) return;
+    var movil = window.matchMedia('(max-width: 760px)').matches;
+    var k = Math.min(1, Math.max(0, (movil ? window.scrollY : carrusel.scrollTop) / Math.max(1, port.offsetHeight)));
+    port.style.opacity = String(1 - k * 0.85);
+    port.style.transform = 'scale(' + (1 - k * 0.3).toFixed(3) + ')';
+    // la cubierta centrada se desvanece al bajar; mientras se ve, el título de la izquierda no aparece
+    var cub = vista.querySelector('.pv-cubierta');
+    if (cub && !movil) {
+      var o = Math.max(0, 1 - k * 6);
+      cub.style.opacity = String(o);
+      cub.style.transform = 'scale(' + (1 - k * 0.3).toFixed(3) + ')';
+      vista.classList.toggle('pv--en-cubierta', o > 0.02);
+    }
+    // al volver a subir hasta la portada, las fotos vuelven a su tamaño y la portada reaparece
+    if (k < 0.5 && vista.classList.contains('pv--grande') && Date.now() > bloqueoArriba) vista.classList.remove('pv--grande');
+  }
+  var bloqueoArriba = 0;
+  // subraya abajo la serie que se está viendo
+  function marcarSerie() {
+    if (vista.classList.contains('pv--video')) return;
+    var movil = window.matchMedia('(max-width: 760px)').matches;
+    var ref = movil ? window.innerHeight / 2 : carrusel.getBoundingClientRect().top + carrusel.clientHeight / 2;
+    var vista_k = -1;
+    carrusel.querySelectorAll('.pv-cabecera').forEach(function (c) { if (c.getBoundingClientRect().top <= ref) vista_k = Number(c.dataset.serie); });
+    // con cubierta: en cuanto se deja la portada, ya se está en la primera colección
+    if (vista_k < 0 && !movil && vista.classList.contains('pv--con-cubierta') && !vista.classList.contains('pv--en-cubierta')) {
+      var c0 = carrusel.querySelector('.pv-cabecera'); if (c0) vista_k = Number(c0.dataset.serie);
+    }
+    var cambio = vista_k !== serieActual;
+    serieActual = vista_k;
+    botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === vista_k ? 'true' : 'false'); });
+    var caja = vista.querySelector('.pv-ficha-izq');
+    if (cambio && caja) {
+      caja.innerHTML = '';
+      if (vista_k >= 0) caja.appendChild(crearFicha(actual.series[vista_k]));
+    }
+    vista.classList.toggle('pv--ficha', vista_k >= 0);
+  }
+  window.addEventListener('resize', function () { if (cuerpo.classList.contains('modo-proyecto')) { ajustarPortada(); efectoPortada(); } });
+  window.addEventListener('scroll', function () { if (cuerpo.classList.contains('modo-proyecto')) { efectoPortada(); marcarSerie(); } }, { passive: true });
+
+  function ajustarTitulo() {
+    return; // el título ya no se escala para llenar la columna
+    var izq = vista.querySelector('.pv-izq'), t = vista.querySelector('.pv-titulo');
+    if (!izq || !t || window.matchMedia('(max-width: 760px)').matches) return;
+    var W = izq.clientWidth * 0.86, H = izq.clientHeight * 0.92, lo = 24, hi = 220;
+    t.style.maxHeight = H + 'px';
+    for (var k = 0; k < 14; k++) {
+      var mid = (lo + hi) / 2;
+      t.style.setProperty('--tam-titulo', mid + 'px');
+      var r = t.getBoundingClientRect();
+      if (r.width <= W && r.height <= H) lo = mid; else hi = mid;
+    }
+    t.style.setProperty('--tam-titulo', Math.floor(lo) + 'px');
+  }
+  window.addEventListener('resize', ajustarTitulo);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTitulo);
+
+  function suave() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'; }
+  function volverAPortada() {
+    if (vista.classList.contains('pv--video')) construirRecorrido();
+    vista.classList.remove('pv--grande');
+    if (window.matchMedia('(max-width: 760px)').matches) window.scrollTo({ top: 0, behavior: suave() });
+    else carrusel.scrollTo({ top: 0, behavior: suave() });
+  }
+
+  // al pasar de fotos a vídeo (o al revés) también hay fundido: primero se va a blanco y luego cambia
+  function anchoCubierta() {
+    var im = vista.querySelector('.pv-cubierta__marco img'), d = vista.querySelector('.pv-carrusel .pv-foto');
+    if (!im) return;
+    // la portada se ve entera; las fotos del carrusel toman su mismo ancho para que el paso de una a otra no se rompa
+    var w = im.getBoundingClientRect().width;
+    if (w > 20) vista.style.setProperty('--ancho-foto', w + 'px');
+  }
+  window.addEventListener('resize', function () { anchoCubierta(); });
+  function elegirSerie(k) {
+    var cambia = esVideo(actual.series[k]) || vista.classList.contains('pv--video');
+    if (cambia && suave() === 'smooth' && !vista.classList.contains('pv--fundido')) {
+      vista.classList.add('pv--fundido'); var t = ++tokenSerie;
+      setTimeout(function () { if (t === tokenSerie) elegirSerieYa(k, true); }, 300);
+      return;
+    }
+    elegirSerieYa(k, false);
+  }
+  function aparecer() {
+    var t = tokenSerie;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { if (t === tokenSerie) vista.classList.remove('pv--fundido'); }); });
+  }
+  function elegirSerieYa(k, yaFundido) {
+    var s = actual.series[k];
+    if (esVideo(s)) {
+      ++tokenSerie;
+      if (vista.classList.contains('pv--video')) construirRecorrido(); else mostrarVideo(k);
+      aparecer(); return;
+    }
+    if (vista.classList.contains('pv--video')) construirRecorrido();
+    // las series de fotos están en el mismo recorrido: se baja hasta su cabecera
+    var cab = carrusel.querySelector('.pv-cabecera[data-serie="' + k + '"]'); if (!cab) return;
+    // la primera foto de la colección queda encuadrada como una portada: centrada en el alto disponible
+    var primera = carrusel.querySelector('.pv-foto[data-serie="' + k + '"]') || cab;
+    var antes = [], im; carrusel.querySelectorAll('.pv-foto img').forEach(function (x) {
+      if (x.closest('.pv-foto').compareDocumentPosition(primera) & Node.DOCUMENT_POSITION_FOLLOWING || x.closest('.pv-foto') === primera) { x.loading = 'eager'; if (!x.complete) antes.push(x); }
+    });
+    var token = ++tokenSerie;
+    function encuadrar(modo) {
+      if (token !== tokenSerie) return;
+      var movil = window.matchMedia('(max-width: 760px)').matches;
+      if (movil) {
+        var alto = window.innerHeight - 70 - 90, r = primera.getBoundingClientRect();
+        window.scrollTo({ top: r.top + window.scrollY - 70 - Math.max(0, (alto - r.height) / 2), behavior: modo });
+      } else {
+        carrusel.scrollTo({ top: primera.offsetTop - Math.max(0, (carrusel.clientHeight - primera.offsetHeight) / 2), behavior: modo });
+      }
+    }
+    // sin recorrido visible: la página se funde a blanco, salta a la colección y vuelve a aparecer
+    var lento = suave() === 'smooth';
+    // al abrir el proyecto no hay fundido: queda oculto sin transición hasta estar encuadrado y aparece de golpe
+    var abrir = yaFundido === 'abrir';
+    if (abrir) vista.classList.add('pv--sin-transicion');
+    vista.classList.add('pv--fundido');
+    var cargadas = Promise.all(antes.map(function (x) { return new Promise(function (ok) { x.addEventListener('load', ok, { once: true }); x.addEventListener('error', ok, { once: true }); }); }));
+    var tope = new Promise(function (ok) { setTimeout(ok, abrir ? 700 : 1500); });
+    var fuera = new Promise(function (ok) { setTimeout(ok, lento && !yaFundido ? 300 : 0); });
+    Promise.all([fuera, Promise.race([cargadas, tope])]).then(function () {
+      if (token !== tokenSerie) return;
+      encuadrar('auto');
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        if (token !== tokenSerie) return;
+        vista.classList.remove('pv--fundido');
+        if (abrir) requestAnimationFrame(function () { vista.classList.remove('pv--sin-transicion'); });
+      }); });
+      // si alguna foto de antes termina de cargar más tarde, se corrige el encuadre sin que se note
+      cargadas.then(function () { encuadrar('auto'); });
+    });
+  }
+  var tokenSerie = 0;
+
+  function mostrarVideo(k) {
+    var s = actual.series[k];
+    serieActual = k;
+    carrusel.innerHTML = '';
+    // fashion film: el vídeo grande, en silencio y en bucle; un clic lo abre a pantalla completa con sonido
+    var bv = el('button', 'pv-foto pv-foto--video'); bv.type = 'button'; bv.dataset.n = 0;
+    bv.setAttribute('aria-label', 'Ver ' + s.nombre);
+    if (esCorto(s)) {
+      // vídeo de YouTube: el reproductor tal cual, dentro de la web; debajo, un enlace por si no carga
+      var caja = el('div', 'pv-foto pv-foto--yt'); caja.dataset.n = 0;
+      var marco = el('div', 'pv-yt__marco');
+      if (!s.youtube) {
+        // aún sin enlace: hueco del vídeo
+        marco.appendChild(el('div', 'pv-vacia pv-yt__pendiente', 'video'));
+        caja.appendChild(marco); carrusel.appendChild(caja);
+        botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
+        vista.classList.remove('pv--grande', 'pv--ficha'); vista.classList.add('pv--video');
+        cuerpo.classList.add('con-video'); carrusel.scrollTop = 0; ponerComentario(0);
+        return;
+      }
+      var fr = el('iframe'); fr.src = 'https://www.youtube-nocookie.com/embed/' + s.youtube + '?rel=0&modestbranding=1&playsinline=1&iv_load_policy=3';
+      fr.title = s.nombre; fr.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture'; fr.allowFullscreen = true;
+      marco.appendChild(fr); caja.appendChild(marco);
+      var enlace = el('a', 'pv-yt__ver', 'watch on youtube \u2197');
+      enlace.href = 'https://www.youtube.com/watch?v=' + s.youtube; enlace.target = '_blank'; enlace.rel = 'noopener';
+      caja.appendChild(enlace);
+      carrusel.appendChild(caja);
+      botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
+      vista.classList.remove('pv--grande', 'pv--ficha'); vista.classList.add('pv--video');
+      cuerpo.classList.add('con-video'); carrusel.scrollTop = 0; ponerComentario(0);
+      return;
+    }
+    var v = el('video'); v.src = s.video; if (s.poster) v.poster = s.poster;
+    v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+    v.addEventListener('loadedmetadata', function () { ponerComentario(0); });
+    bv.appendChild(v);
+    bv.addEventListener('click', function () { abrirVideo(s, v); });
+    carrusel.appendChild(bv);
+    var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+    botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
+    vista.classList.remove('pv--grande');
+    vista.classList.add('pv--video');
+    vista.classList.remove('pv--ficha');
+    cuerpo.classList.add('con-video');
+    carrusel.scrollTop = 0;
+    ponerComentario(0);
+  }
+
+  function ponerComentario(i, k) {
+    if (k == null) k = serieActual;
+    var s = actual.series[k]; if (!s) return;
+    if (esVideo(s)) {
+      // fashion film: a la izquierda, la ficha con los créditos enlazados a Instagram
+      comentEtiqueta.textContent = '';
+      comentTexto.textContent = '';
+      comentTexto.appendChild(crearFicha(s));
+      return;
+    }
+    comentEtiqueta.textContent = s.nombre + (actualId == 1 ? '   ' : ' - ') + dos(i + 1) + ' / ' + dos(s.fotos.length);
+    comentTexto.textContent = '';
+  }
+  function mmss(t) { t = Math.floor(t); return dos(Math.floor(t / 60)) + ':' + dos(t % 60); }
+  function comentarioVisible() {
+    if (!vista.classList.contains('pv--grande')) return;
+    var mitad = carrusel.getBoundingClientRect().top + carrusel.clientHeight / 2, mejor = null, dist = 1e9;
+    carrusel.querySelectorAll('.pv-foto[data-serie]').forEach(function (c) {
+      var r = c.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - mitad);
+      if (d < dist) { dist = d; mejor = c; }
+    });
+    if (mejor) ponerComentario(Number(mejor.dataset.n), Number(mejor.dataset.serie));
+  }
+
+  // vuelve a poner las fotos pequeñas, manteniendo a la vista la que estaba en el centro
+  function reducirFotos() {
+    if (!vista.classList.contains('pv--grande')) return;
+    var mitad = carrusel.getBoundingClientRect().top + carrusel.clientHeight / 2, foco = null, dist = 1e9;
+    carrusel.querySelectorAll('.pv-foto[data-serie]').forEach(function (c) {
+      var r = c.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - mitad);
+      if (d < dist) { dist = d; foco = c; }
+    });
+    vista.classList.remove('pv--grande');
+    if (foco) setTimeout(function () {
+      carrusel.scrollTo({ top: Math.max(0, foco.offsetTop - (carrusel.clientHeight - foco.offsetHeight) / 2), behavior: suave() });
+    }, 560);
+  }
+  function pulsarFoto(b, nReal) {
+    if (!vista.classList.contains('pv--grande')) {
+      // primer clic: todas las fotos se amplían y aparece el comentario
+      vista.classList.add('pv--grande');
+      bloqueoArriba = Date.now() + 1600;
+      ponerComentario(Number(b.dataset.n), Number(b.dataset.serie));
+      setTimeout(function () { carrusel.scrollTo({ top: b.offsetTop, behavior: suave() }); }, 560);
+      return;
+    }
+    // segundo clic: la foto a pantalla completa
+    if (nReal >= 0) abrirVisor(nReal);
+  }
+
+  var visorVideo = document.getElementById('visor-video');
+  var relojVideo = null;
+  function pieVideo(s) { visorPie.textContent = s.nombre + '   ' + mmss(visorVideo.currentTime || 0) + ' - ' + mmss(visorVideo.duration || 0) + '   ' + (visorVideo.paused ? 'play' : 'pause'); }
+  function abrirVideo(s, vCarrusel) {
+    if (vCarrusel) vCarrusel.pause();
+    visorImg.hidden = true; visorVideo.hidden = false; visorYt.hidden = true; visorYt.innerHTML = ''; visor.classList.remove('visor--yt');
+    if (visorVideo.getAttribute('src') !== s.video) { visorVideo.src = s.video; if (s.poster) visorVideo.poster = s.poster; }
+    visorVideo.muted = false; visorVideo.currentTime = vCarrusel ? vCarrusel.currentTime : 0;
+    visor.classList.add('abierto', 'visor--video');
+    var pr = visorVideo.play(); if (pr && pr.catch) pr.catch(function () {});
+    pieVideo(s);
+    clearInterval(relojVideo); relojVideo = setInterval(function () { pieVideo(s); }, 250);
+  }
+  visorVideo.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (visorVideo.paused) visorVideo.play(); else visorVideo.pause();
+  });
+  var visorYt = document.getElementById('visor-yt');
+  function abrirYoutube(s) {
+    visorImg.hidden = true; visorVideo.hidden = true; visorYt.hidden = false;
+    visorYt.innerHTML = '';
+    var fr = el('iframe'); fr.src = urlYoutube(s.youtube, false); fr.title = s.nombre;
+    fr.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture'; fr.allowFullscreen = true;
+    visorYt.appendChild(fr);
+    visor.classList.add('abierto', 'visor--video', 'visor--yt');
+  }
+  visorYt.addEventListener('click', function (e) { e.stopPropagation(); });
+  function abrirVisor(i) {
+    visorYt.hidden = true; visorYt.innerHTML = ''; visor.classList.remove('visor--yt');
+    visorVideo.hidden = true; visorImg.hidden = false; visor.classList.remove('visor--video');
+    indiceVisor = i;
+    var r = reales[i], s = actual.series[r.serie];
+    visorImg.src = 'img/proyectos/' + r.f + '.webp';
+    visorImg.alt = s.nombre + ', foto ' + (r.n + 1);
+    visorPie.textContent = s.nombre + '   ' + dos(r.n + 1) + ' / ' + dos(s.fotos.length);
+    visor.classList.add('abierto');
+  }
+  function cerrarVisor() {
+    visor.classList.remove('abierto');
+    if (visor.classList.contains('visor--yt')) {
+      visor.classList.remove('visor--video', 'visor--yt');
+      setTimeout(function () { visorYt.innerHTML = ''; visorYt.hidden = true; }, 360);
+      return;
+    }
+    if (visor.classList.contains('visor--video')) {
+      visorVideo.pause(); clearInterval(relojVideo); visor.classList.remove('visor--video');
+      var vc = carrusel && carrusel.querySelector('video');
+      if (vc) { vc.currentTime = visorVideo.currentTime; var pr = vc.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    }
+  }
+  function mover(d) { if (!reales.length || visor.classList.contains('visor--video')) return; abrirVisor((indiceVisor + d + reales.length) % reales.length); }
+
+  // porcentaje recorrido de la serie (0% al empezar, 100% al llegar al final)
+  function actualizarProgreso() {
+    if (!carrusel || !cuerpo.classList.contains('con-serie')) return;
+    var movil = window.matchMedia('(max-width: 760px)').matches;
+    var top = movil ? window.scrollY : carrusel.scrollTop;
+    var max = movil ? document.documentElement.scrollHeight - window.innerHeight : carrusel.scrollHeight - carrusel.clientHeight;
+    var pct = max > 2 ? Math.round(Math.min(1, Math.max(0, top / max)) * 100) : 0;
+    progreso.textContent = pct + '%';
+  }
+  window.addEventListener('scroll', actualizarProgreso, { passive: true });
+  window.addEventListener('resize', actualizarProgreso);
+
+  document.querySelectorAll('.proyecto[data-id]').forEach(function (b) {
+    b.addEventListener('click', function () { abrirProyecto(b.dataset.id); });
+  });
+  visor.addEventListener('click', cerrarVisor);
+  ['salir-archive', 'abrir-archive'].forEach(function (id) {
+    document.getElementById(id).addEventListener('click', function () { cuerpo.classList.remove('con-serie', 'con-video'); });
+  });
+
+  // Rueda del ratón en ordenador: en archive mueve la lista; en un proyecto, el carrusel (esté donde esté el cursor)
+  var saltoCubierta = 0;
+  window.addEventListener('wheel', function (e) {
+    if (window.matchMedia('(max-width: 760px)').matches) return;
+    if (visor.classList.contains('abierto') || document.querySelector('.seccion.abierta')) return;
+    if (cuerpo.classList.contains('modo-proyecto')) {
+      if (vista.classList.contains('pv--con-cubierta') && vista.classList.contains('pv--en-cubierta') && !vista.classList.contains('pv--grande') && carrusel && e.deltaY > 0 && Date.now() > saltoCubierta) {
+        var c0 = carrusel.querySelector('.pv-cabecera');
+        if (c0) { e.preventDefault(); saltoCubierta = Date.now() + 900; elegirSerie(Number(c0.dataset.serie)); return; }
+      }
+      if (vista.classList.contains('pv--con-cubierta') && Date.now() < saltoCubierta) { e.preventDefault(); return; }
+      if (cuerpo.classList.contains('con-serie') && carrusel && !carrusel.contains(e.target)) carrusel.scrollBy({ top: e.deltaY, left: 0 });
+      return;
+    }
+    var archivoEl = document.getElementById('archive');
+    if (cuerpo.classList.contains('modo-archive') && !archivoEl.contains(e.target)) archivoEl.scrollBy({ top: e.deltaY, left: 0 });
+  }, { passive: false });
+
+  document.addEventListener('keydown', function (e) {
+    if (visor.classList.contains('abierto')) {
+      if (e.key === 'Escape') { cerrarVisor(); e.stopImmediatePropagation(); }
+      else if (e.key === 'ArrowRight') mover(1);
+      else if (e.key === 'ArrowLeft') mover(-1);
+      return;
+    }
+    if (e.key !== 'Escape' || !cuerpo.classList.contains('modo-proyecto') || document.querySelector('.seccion.abierta')) return;
+    e.stopImmediatePropagation();
+    // Esc va un paso atrás cada vez: fotos grandes > carrusel > portada del proyecto > archive
+    var abajo = window.matchMedia('(max-width: 760px)').matches ? window.scrollY : (carrusel ? carrusel.scrollTop : 0);
+    if (vista.classList.contains('pv--grande')) reducirFotos();
+    else if (vista.classList.contains('pv--video') || abajo > 4) volverAPortada();
+    else cuerpo.classList.remove('modo-proyecto');
+  }, true);
+})();
+</script>
+</body>
+</html>
