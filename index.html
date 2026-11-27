@@ -1494,13 +1494,15 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
     // fashion film: el vídeo grande, quieto (sin bucle ni reproducción automática); un clic lo abre a pantalla completa con sonido
     var bv = el('button', 'pv-foto pv-foto--video'); bv.type = 'button'; bv.dataset.n = 0;
     bv.setAttribute('aria-label', 'Ver ' + s.nombre);
-    if (esCorto(s)) {
+    // el fashion film se ve como sonidos del verano: el vídeo con sus controles (y en el móvil, debajo el título con "info +")
+    var ffMovil = !esCorto(s) && !!s.video;
+    if (esCorto(s) || ffMovil) {
       // vídeo de YouTube: el reproductor tal cual, dentro de la web; debajo, un enlace por si no carga
       var caja = el('div', 'pv-foto pv-foto--yt'); caja.dataset.n = 0;
       var marco = el('div', 'pv-yt__marco');
-      if (s.archivo) {
+      if (s.archivo || ffMovil) {
         // vídeo propio (mp4) en vez de YouTube: reproductor nativo con sonido y controles
-        var vf = el('video'); vf.src = s.archivo; if (s.poster) vf.poster = s.poster;
+        var vf = el('video'); vf.src = s.archivo || s.video; if (s.poster) vf.poster = s.poster;
         vf.controls = true; vf.playsInline = true; vf.setAttribute('playsinline', ''); vf.preload = 'metadata';
         marco.appendChild(vf); caja.appendChild(marco); carrusel.appendChild(caja);
         botonesSerie.forEach(function (b, j) { b.setAttribute('aria-pressed', j === k ? 'true' : 'false'); });
