@@ -540,7 +540,10 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
 .pv-nombre-mano--lamore, .pv-nombre-mano--sublime { height: clamp(40px, 3.9vw, 56px); }
 .pv-nombre-mano--helga { height: clamp(72px, 6.8vw, 98px); }
 .pv-nombre-mano--stills { height: clamp(46px, 4.4vw, 64px); }
-@media (max-width: 760px) { .pv-nombre-mano { height: 64px; margin: 0; } .pv-portada__nombre--der .pv-nombre-mano { margin-left: auto; } }
+/* helga y stills: el mismo ancho, para que los dos nombres ocupen lo mismo */
+.pv-nombre-mano.pv-nombre-mano--helga, .pv-nombre-mano.pv-nombre-mano--stills { width: clamp(120px, 10.5vw, 170px); height: auto; max-width: 100%; }
+@media (max-width: 760px) { .pv-nombre-mano { height: 64px; margin: 0; } .pv-portada__nombre--der .pv-nombre-mano { margin-left: auto; }
+  .pv-nombre-mano.pv-nombre-mano--helga, .pv-nombre-mano.pv-nombre-mano--stills { width: 197px; height: auto; max-width: 60vw; } }
 @media (min-width: 761px) {
   .pv-cubierta {
     display: grid; position: absolute; inset: 56px 0 64px; z-index: 2; pointer-events: none;
