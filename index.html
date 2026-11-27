@@ -668,6 +668,8 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   .pv-ficha--corto.info-abierta { display: flex; flex-direction: column; justify-content: center; min-height: calc(100svh - 70px); padding-bottom: 20px; }
   .pv-ficha--corto .pv-ficha__dentro { padding-left: 0; }
   .proyecto-vista.pv--info .pv-yt__ver { visibility: hidden; }
+  /* con la info abierta el vídeo no asoma por arriba (ni la línea negra de su borde) */
+  .proyecto-vista.pv--info .pv-yt__marco { visibility: hidden; }
   .pv-ficha--corto p { font-size: 12px; line-height: 1.5; }
   body.modo-proyecto .portada { padding-bottom: 72px; }
   .pv-portada__foto { aspect-ratio: 9 / 10; }
@@ -1280,6 +1282,11 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
         // con la info abierta salen también los créditos, y la página baja hasta la ficha (el vídeo queda arriba, fuera de la vista)
         var cj = f.querySelector('.pv-creditos'); if (cj) cj.classList.toggle('abierto', ab);
         var pv = f.closest('.proyecto-vista'); if (pv) pv.classList.toggle('pv--info', ab);
+        // al abrir la info, el vídeo se para y vuelve al principio (con su portada), listo para verlo otra vez
+        if (ab) {
+          vista.querySelectorAll('.pv-carrusel video').forEach(function (v) { v.pause(); v.load(); });
+          vista.querySelectorAll('.pv-yt__marco iframe').forEach(function (fr) { var u = fr.src; fr.src = 'about:blank'; fr.src = u; });
+        }
         if (ab) setTimeout(function () { window.scrollTo({ top: f.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' }); }, 30);
         else window.scrollTo({ top: 0, behavior: 'smooth' });
       });
