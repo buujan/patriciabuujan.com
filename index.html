@@ -124,7 +124,7 @@ a:focus-visible { outline: 1px solid var(--ink); outline-offset: 4px; }
   /* Patricia a la altura del centro de la primera foto y Buján del de la segunda */
   body:not(.modo-archive):not(.modo-proyecto) .nombre--izq { grid-row: 3; }
   body:not(.modo-archive):not(.modo-proyecto) .nombre--der { grid-row: 4; }
-  body:not(.modo-archive):not(.modo-proyecto) .nombre .firma { height: 34px; max-width: 100%; }
+  body:not(.modo-archive):not(.modo-proyecto) .nombre .firma { height: 40px; max-width: 100%; }
 }
 
 /* Hoja about / contact (según el boceto de Patricia): hoja en blanco sobre la portada.
@@ -344,7 +344,7 @@ body.modo-proyecto .archivo__salir { display: block; }
   body.modo-archive .archivo__salir { display: block; }
   /* el menú (about / archive / contact) se queda fijo arriba al bajar por archive */
   body.modo-archive .menu {
-    position: sticky; top: 0; z-index: 16; background: var(--bg);
+    position: sticky; top: 0; z-index: 21; background: var(--bg); /* por encima de la hoja de about / contact */
     margin-top: calc(-1 * clamp(18px, 3vh, 32px)); padding-block: calc(clamp(18px, 3vh, 32px) + env(safe-area-inset-top, 0px)) 12px;
     margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter);
   }
@@ -397,6 +397,7 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   display: flex; align-items: center; justify-content: center;
   transform-origin: 50% 0;
 }
+.pv-portada__foto.pv-cargando { opacity: 0; box-shadow: none; }
 .pv-portada__foto {
   display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
   box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35);
@@ -647,7 +648,8 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   .proyecto-vista.pv--video .pv-carrusel { padding-bottom: 0; }
   .proyecto-vista.pv--video .pv-yt__ver { align-self: flex-end; font-size: 11px; padding-inline: var(--gutter); }
   .pv-ficha--corto .pv-ficha__cabeza { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 0 !important; }
-  .pv-ficha--corto .pv-ficha__cabeza img { zoom: .72; }
+  .pv-ficha--corto .pv-ficha__cabeza img { zoom: .72; min-width: 0; flex: 0 1 auto; object-fit: contain; object-position: left bottom; }
+  .pv-ficha--corto .pv-ficha__cabeza { min-width: 0; }
   .pv-info__boton { display: block; flex: none; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 13px; letter-spacing: 0.03em; color: var(--ink); cursor: pointer; }
   .pv-info__boton[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
   .pv-ficha--corto > p:not(.pv-ficha__cabeza), .pv-ficha--corto > .pv-creditos, .pv-ficha--corto > .pv-creditos__boton { display: none; }
@@ -859,6 +861,12 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   var cuerpo = document.body;
   function abrirArchive(e) {
     if (e) e.preventDefault();
+    // con about / contact abierto, "archive" cierra la hoja y deja ver archive
+    var hojaV = document.getElementById('hoja');
+    if (hojaV && hojaV.classList.contains('visible')) {
+      document.getElementById('salir').click();
+      cuerpo.classList.remove('modo-proyecto'); cuerpo.classList.add('modo-archive'); return;
+    }
     // si ya estás en la lista de archive, volver a pulsar "archive" te lleva a la portada
     if (cuerpo.classList.contains('modo-archive') && !cuerpo.classList.contains('modo-proyecto')) {
       cuerpo.classList.remove('modo-archive'); return;
@@ -1195,6 +1203,8 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
       // en móvil: nombre arriba, foto entera y nombre abajo, dentro del recorrido
       port.appendChild(nombreEl('pv-portada__nombre pv-portada__nombre--izq', partes[0]));
       var im = el('img', 'pv-portada__foto'); im.src = srcPortada; im.alt = p.titulo + ', portada'; port.appendChild(im);
+      // mientras carga no se ve el hueco vacío: la portada aparece ya entera
+      if (!im.complete) { im.classList.add('pv-cargando'); im.addEventListener('load', function () { im.classList.remove('pv-cargando'); marcarSerie(); }); }
       var nd2 = nombreEl('pv-portada__nombre pv-portada__nombre--der', partes[1]);
       if (p.sub) nd2.appendChild(el('span', 'pv-cubierta__sub', p.sub));
       port.appendChild(nd2);
@@ -1205,7 +1215,7 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
       if (esVideo(s)) return;
       // separador con el nombre de la serie; en móvil lleva debajo la ficha (en ordenador va a la izquierda)
       var cab = el('div', 'pv-cabecera');
-      cab.appendChild(el('p', 'pv-cabecera__nombre', s.nombre));
+      cab.appendChild(el('p', 'pv-cabecera__nombre', tr(s.nombre)));
       if (s.ficha) { var fm = crearFicha(s); fm.classList.add('pv-ficha--movil'); cab.appendChild(fm); }
       cab.dataset.serie = k;
       carrusel.appendChild(cab);
@@ -1381,7 +1391,14 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
     vista.querySelectorAll('video').forEach(function (v) { v.pause(); });
     vista.querySelectorAll('iframe').forEach(function (f) { f.remove(); });
   }
+  // al entrar en archive se cargan ya las portadas de los proyectos, para que al abrir uno salga al momento
+  var portadasCargadas = false;
+  function cargarPortadas() {
+    if (portadasCargadas) return; portadasCargadas = true;
+    Object.keys(PROYECTOS).forEach(function (id) { var pp = PROYECTOS[id]; if (pp.portada) { var i = new Image(); i.src = pp.portada; } });
+  }
   new MutationObserver(function () {
+    if (cuerpo.classList.contains('modo-archive')) cargarPortadas();
     if (!cuerpo.classList.contains('modo-proyecto')) pararVideos();
   }).observe(cuerpo, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', function () {
