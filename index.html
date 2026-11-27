@@ -655,6 +655,9 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
   .pv-ficha--corto .pv-ficha__cabeza { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 0 !important; }
   .pv-ficha--corto .pv-ficha__cabeza img { zoom: .72; min-width: 0; flex: 0 1 auto; object-fit: contain; object-position: left bottom; }
   .pv-ficha--corto .pv-ficha__cabeza { min-width: 0; }
+  /* l'amore sublime: las dos palabras juntas, como en el ordenador; "info +" sigue a la derecha */
+  .pv-ficha--corto .pv-ficha__cabeza--palabras { justify-content: flex-start; column-gap: 10px; }
+  .pv-ficha--corto .pv-ficha__cabeza--palabras .pv-info__boton { margin-left: auto; }
   .pv-info__boton { display: block; flex: none; background: none; border: 0; padding: 6px 0; font: inherit; font-size: 13px; letter-spacing: 0.03em; color: var(--ink); cursor: pointer; }
   .pv-info__boton[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
   .pv-ficha--corto > p:not(.pv-ficha__cabeza), .pv-ficha--corto > .pv-creditos, .pv-ficha--corto > .pv-creditos__boton { display: none; }
@@ -1405,12 +1408,24 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   }
   // al entrar en archive se cargan ya las portadas de los proyectos, para que al abrir uno salga al momento
   var portadasCargadas = false;
+  var posArchive = null, enProyecto = false;
+  function volverAPosicion() {
+    if (!posArchive) return;
+    var pos = posArchive, arch = document.getElementById('archive');
+    var poner = function () { if (arch) arch.scrollTop = pos.lista; window.scrollTo(0, pos.ventana); };
+    poner(); requestAnimationFrame(function () { poner(); requestAnimationFrame(poner); });
+    setTimeout(poner, 120);
+  }
   function cargarPortadas() {
     if (portadasCargadas) return; portadasCargadas = true;
     Object.keys(PROYECTOS).forEach(function (id) { var pp = PROYECTOS[id]; if (pp.portada) { var i = new Image(); i.src = pp.portada; } });
   }
   new MutationObserver(function () {
     if (cuerpo.classList.contains('modo-archive')) cargarPortadas();
+    // al salir de un proyecto a archive (con la X o con "archive"), se vuelve al punto en que estabas
+    var ahora = cuerpo.classList.contains('modo-proyecto');
+    if (enProyecto && !ahora && cuerpo.classList.contains('modo-archive')) volverAPosicion();
+    enProyecto = ahora;
     if (!cuerpo.classList.contains('modo-proyecto')) pararVideos();
   }).observe(cuerpo, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', function () {
@@ -1668,7 +1683,12 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   window.addEventListener('resize', actualizarProgreso);
 
   document.querySelectorAll('.proyecto[data-id]').forEach(function (b) {
-    b.addEventListener('click', function () { abrirProyecto(b.dataset.id); });
+    b.addEventListener('click', function () {
+      // se apunta por dónde ibas en archive, para volver ahí al salir del proyecto
+      var arch = document.getElementById('archive');
+      posArchive = { ventana: window.scrollY, lista: arch ? arch.scrollTop : 0 };
+      abrirProyecto(b.dataset.id);
+    });
   });
   visor.addEventListener('click', cerrarVisor);
   ['salir-archive', 'abrir-archive'].forEach(function (id) {
