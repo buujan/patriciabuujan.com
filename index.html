@@ -494,6 +494,8 @@ body.modo-proyecto .menu a.enlace-archive { text-decoration: none; }
 .pv-foto img { display: block; width: 100%; height: auto; box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35); }
 .pv-foto .pv-vacia { width: 100%; }
 .pv-foto--vacia { cursor: default; }
+.pv-carrusel.pv-sin-trans .pv-foto { transition: none !important; }
+.pv-carrusel { will-change: auto; }
 .pv-foto.pv-foto--encuadre img, .proyecto-vista .pv-foto.pv-foto--encuadre img { aspect-ratio: 9 / 10; height: auto; object-fit: cover; }
 .pv-foto--video { width: 100%; }
 .pv-foto--video video { display: block; width: 100%; height: auto; box-shadow: 0 1px 2px rgba(29,29,27,.05), 0 10px 26px -16px rgba(29,29,27,.35); }
@@ -1611,8 +1613,45 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   }
 
   // vuelve a poner las fotos pequeñas, manteniendo a la vista la que estaba en el centro
+  function esMovil() { return window.matchMedia('(max-width: 760px)').matches; }
+  // móvil: ampliar / reducir las fotos sin saltos. El cambio de tamaño se hace de golpe, la página se recoloca
+  // para que la foto elegida quede exactamente donde estaba, y la transición se ve como un zoom suave
+  // (transform) que parte del tamaño anterior, centrado en esa foto.
+  function zoomMovil(foto, grande) {
+    var reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var r0 = foto.getBoundingClientRect(), c0 = r0.top + r0.height / 2, w0 = r0.width;
+    carrusel.classList.add('pv-sin-trans');
+    carrusel.style.transition = 'none'; carrusel.style.transform = '';
+    vista.classList.toggle('pv--grande', grande);
+    var r1 = foto.getBoundingClientRect();
+    window.scrollTo(0, window.scrollY + (r1.top + r1.height / 2) - c0);
+    r1 = foto.getBoundingClientRect();
+    if (reducir || !r1.width) { carrusel.classList.remove('pv-sin-trans'); return; }
+    var cr = carrusel.getBoundingClientRect();
+    carrusel.style.transformOrigin = (r1.left + r1.width / 2 - cr.left) + 'px ' + (r1.top + r1.height / 2 - cr.top) + 'px';
+    carrusel.style.transform = 'scale(' + (w0 / r1.width) + ')';
+    void carrusel.offsetWidth;
+    carrusel.style.transition = 'transform .5s cubic-bezier(.22,.7,.2,1)';
+    carrusel.style.transform = 'scale(1)';
+    var fin = function () {
+      carrusel.removeEventListener('transitionend', fin);
+      carrusel.style.transition = ''; carrusel.style.transform = ''; carrusel.style.transformOrigin = '';
+      carrusel.classList.remove('pv-sin-trans');
+    };
+    carrusel.addEventListener('transitionend', fin); setTimeout(fin, 700);
+  }
   function reducirFotos() {
     if (!vista.classList.contains('pv--grande')) return;
+    if (esMovil()) {
+      // la foto que está en el centro de la pantalla es la que se queda en su sitio
+      var medio = window.innerHeight / 2, fm = null, dm = 1e9;
+      carrusel.querySelectorAll('.pv-foto[data-serie]').forEach(function (c) {
+        var r = c.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - medio);
+        if (d < dm) { dm = d; fm = c; }
+      });
+      if (fm) zoomMovil(fm, false); else vista.classList.remove('pv--grande');
+      return;
+    }
     var mitad = carrusel.getBoundingClientRect().top + carrusel.clientHeight / 2, foco = null, dist = 1e9;
     carrusel.querySelectorAll('.pv-foto[data-serie]').forEach(function (c) {
       var r = c.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - mitad);
@@ -1626,18 +1665,10 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   function pulsarFoto(b, nReal) {
     if (!vista.classList.contains('pv--grande')) {
       // primer clic: todas las fotos se amplían y aparece el comentario
-      vista.classList.add('pv--grande');
       bloqueoArriba = Date.now() + 1600;
+      if (esMovil()) zoomMovil(b, true); else vista.classList.add('pv--grande');
       ponerComentario(Number(b.dataset.n), Number(b.dataset.serie));
-      if (window.matchMedia('(max-width: 760px)').matches) {
-        // móvil: la foto pulsada se queda donde estaba mientras crecen todas (la página no salta)
-        var r0 = b.getBoundingClientRect(), centro0 = r0.top + r0.height / 2, hasta = performance.now() + 900;
-        (function anclar() {
-          var r = b.getBoundingClientRect(), dif = (r.top + r.height / 2) - centro0;
-          if (Math.abs(dif) > 0.5) window.scrollTo(0, window.scrollY + dif);
-          if (performance.now() < hasta) requestAnimationFrame(anclar);
-        })();
-      } else setTimeout(function () { carrusel.scrollTo({ top: b.offsetTop, behavior: suave() }); }, 560);
+      if (!esMovil()) setTimeout(function () { carrusel.scrollTo({ top: b.offsetTop, behavior: suave() }); }, 560);
       return;
     }
     // segundo clic: la foto a pantalla completa
