@@ -1618,27 +1618,42 @@ body.modo-proyecto .idioma, .visor.abierto ~ .idioma { display: none; }
   // para que la foto elegida quede exactamente donde estaba, y la transición se ve como un zoom suave
   // (transform) que parte del tamaño anterior, centrado en esa foto.
   function zoomMovil(foto, grande) {
+    // Cada foto (y cada cabecera) hace su propio zoom con transform: así el navegador no tiene que redibujar
+    // todo el carrusel de golpe, que es lo que dejaba huecos en blanco un instante.
     var reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var r0 = foto.getBoundingClientRect(), c0 = r0.top + r0.height / 2, w0 = r0.width;
+    var hijos = Array.prototype.slice.call(carrusel.children);
+    hijos.forEach(function (h) { h.style.transition = ''; h.style.transform = ''; });
+    var antes = hijos.map(function (h) { return h.getBoundingClientRect(); });
+    var r0 = foto.getBoundingClientRect(), c0 = r0.top + r0.height / 2;
     carrusel.classList.add('pv-sin-trans');
-    carrusel.style.transition = 'none'; carrusel.style.transform = '';
     vista.classList.toggle('pv--grande', grande);
     var r1 = foto.getBoundingClientRect();
     window.scrollTo(0, window.scrollY + (r1.top + r1.height / 2) - c0);
-    r1 = foto.getBoundingClientRect();
-    if (reducir || !r1.width) { carrusel.classList.remove('pv-sin-trans'); return; }
-    var cr = carrusel.getBoundingClientRect();
-    carrusel.style.transformOrigin = (r1.left + r1.width / 2 - cr.left) + 'px ' + (r1.top + r1.height / 2 - cr.top) + 'px';
-    carrusel.style.transform = 'scale(' + (w0 / r1.width) + ')';
+    var alto = window.innerHeight;
+    // las fotos que van a verse se cargan ya, para que ninguna aparezca vacía
+    carrusel.querySelectorAll('img').forEach(function (im) {
+      var r = im.getBoundingClientRect();
+      if (r.bottom > -2 * alto && r.top < 3 * alto) im.loading = 'eager';
+    });
+    if (reducir) { carrusel.classList.remove('pv-sin-trans'); return; }
+    var anim = [];
+    hijos.forEach(function (h, k) {
+      var a = antes[k], d = h.getBoundingClientRect();
+      if (!d.width || !a.width) return;
+      var visibleAhora = d.bottom > -alto * 0.25 && d.top < alto * 1.25, visibleAntes = a.bottom > -alto * 0.25 && a.top < alto * 1.25;
+      if (!visibleAhora && !visibleAntes) return;
+      var sc = a.width / d.width, dx = (a.left + a.width / 2) - (d.left + d.width / 2), dy = (a.top + a.height / 2) - (d.top + d.height / 2);
+      if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && Math.abs(sc - 1) < 0.002) return;
+      h.style.transformOrigin = '50% 50%';
+      h.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+      anim.push(h);
+    });
     void carrusel.offsetWidth;
-    carrusel.style.transition = 'transform .5s cubic-bezier(.22,.7,.2,1)';
-    carrusel.style.transform = 'scale(1)';
-    var fin = function () {
-      carrusel.removeEventListener('transitionend', fin);
-      carrusel.style.transition = ''; carrusel.style.transform = ''; carrusel.style.transformOrigin = '';
-      carrusel.classList.remove('pv-sin-trans');
-    };
-    carrusel.addEventListener('transitionend', fin); setTimeout(fin, 700);
+    carrusel.classList.remove('pv-sin-trans');
+    anim.forEach(function (h) { h.style.transition = 'transform .5s cubic-bezier(.22,.7,.2,1)'; h.style.transform = ''; });
+    setTimeout(function () {
+      anim.forEach(function (h) { h.style.transition = ''; h.style.transform = ''; h.style.transformOrigin = ''; });
+    }, 560);
   }
   function reducirFotos() {
     if (!vista.classList.contains('pv--grande')) return;
